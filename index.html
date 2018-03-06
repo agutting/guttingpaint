@@ -1,0 +1,30 @@
+<html><head>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<script src="script.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/vader/jquery-ui.css">
+<link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head><body>
+<div class="header" draggable="false">
+	<div class="color-picker-container">Color
+		<input class="color-picker" type="color">
+	</div>
+	<div class="slider-container">Brush Size: <span class="current-brush-size">20</span>
+		<div class="brush-slider"></div>
+	</div>
+	<div class="undo-container">
+		Undo<br><i id="undo-button" class="far fa-arrow-alt-circle-left header-button header-button-disabled"></i>
+	</div>
+	<div class="redo-container">
+		Redo<br><i id="redo-button" class="far fa-arrow-alt-circle-right header-button header-button-disabled"></i>
+	</div>
+	<div class="clear-all-container">
+		Clear All<br><span class="close heavy header-button"></span>
+	</div>
+</div>
+<div id="canvas"></div>
+
+
+<script src="eventListeners.js"></script>
+</body></html>
