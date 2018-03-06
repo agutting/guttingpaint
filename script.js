@@ -113,15 +113,19 @@ class canvasHistory {
 	}
 	
 	undo(){
-		this.undoHistory[this.undoHistory.length - 1].removeFromCanvas();
-		this.redoHistory.push(this.undoHistory.pop());
-		this.checkHistoryButtons();
+		if (!document.getElementById("undo-button").classList.contains("header-button-disabled")){	
+			this.undoHistory[this.undoHistory.length - 1].removeFromCanvas();
+			this.redoHistory.push(this.undoHistory.pop());
+			this.checkHistoryButtons();
+		}
 	}
 	
 	redo(){
-		this.redoHistory[this.redoHistory.length - 1].createBrushStroke();
-		this.undoHistory.push(this.redoHistory.pop());
-		this.checkHistoryButtons();
+		if (!document.getElementById("redo-button").classList.contains("header-button-disabled")){
+			this.redoHistory[this.redoHistory.length - 1].createBrushStroke();
+			this.undoHistory.push(this.redoHistory.pop());
+			this.checkHistoryButtons();
+		}
 	}
 	
 	checkHistoryButtons(){
