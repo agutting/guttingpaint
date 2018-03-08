@@ -45,6 +45,8 @@ $(document).mouseup(function(){
 $(".close").click(function(){
 	$("svg").remove();
 	paintHistory.setLayerId(0);
+	paintHistory.undoHistory.length = 0;
+	paintHistory.redoHistory.length = 0;
 });
 
 $("#undo-button").click(function(){

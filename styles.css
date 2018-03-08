@@ -1,19 +1,9 @@
 body {	margin: 0px;}.brush-slider {
 	margin-top: 12px;
-}
+}.button-container {	height: 70px;	float: left;	margin-top: 5px;	margin-bottom: 5px;	padding-left: 20px;	padding-right: 20px;	text-align: center;}.button-seperator {	border-right-style: solid;	border-right-width: 1px;}
 
 #canvas {
-	/* height: -moz-calc(100% - 80px); */	/* height: -webkit-calc(100% - 80px); */	/* height: calc(100% - 80px); */	/* width: 100%; */	position: absolute;	top: 80;	bottom: 0;	left: 0;	right: 0;
-}
-
-.clear-all-container {
-	height: 70px;
-	float: left;
-	margin-top: 5px;
-	margin-bottom: 5px;
-	padding-left: 20px;
-	padding-right: 20px;
-	text-align: center;
+	position: absolute;	top: 80;	bottom: 0;	left: 0;	right: 0;
 }
 
 .close {
@@ -64,7 +54,7 @@ body {	margin: 0px;}.brush-slider {
 	text-align: center;
 	margin-top: 5px;
 	margin-bottom: 5px;
-	margin-left: 40px;
+	margin-left: 20px;
 	padding-right: 20px;
 	border-right-style: solid;
 	border-right-width: 1px;
@@ -76,7 +66,7 @@ body {	margin: 0px;}.brush-slider {
 	background-color: rgb(205,205,205);
 	z-index: 9999;
 	-moz-user-select: none;
-}.header-button {	font-size: 2.6em;	cursor: pointer;}.header-button:hover {	color: blue;}.header-button-disabled {	opacity: 0.5;	cursor: default !important;}.header-button-disabled:hover {	color: black !important;}.redo-container {	height: 70px;	float: left;	margin-top: 5px;	margin-bottom: 5px;	padding-left: 20px;	padding-right: 20px;	text-align: center;	border-right-style: solid;	border-right-width: 1px;}
+}.header-button {	font-size: 2.6em;	cursor: pointer;}.header-button:hover {	color: blue;}.header-button-disabled {	opacity: 0.5;	cursor: default !important;}.header-button-disabled:hover {	color: black !important;}
 
 .slider-container {
 	width: 300px;
@@ -89,4 +79,4 @@ body {	margin: 0px;}.brush-slider {
 	text-align: center;
 	border-right-style: solid;
 	border-right-width: 1px;
-}.undo-container {	height: 70px;	float: left;	margin-top: 5px;	margin-bottom: 5px;	padding-left: 20px;	padding-right: 20px;	text-align: center;	border-right-style: solid;	border-right-width: 1px;}
+}
