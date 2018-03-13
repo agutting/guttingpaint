@@ -20,22 +20,65 @@ class paintBrush {
 		if ($(document).data('mousedown')){
 			this.mouseX = mouseX - this.radius;
 			this.mouseY = mouseY - this.radius - 80; // 80 is offset for header height
-			$("#canvas").append("<svg class='line"+paintHistory.getLayerId()+"' draggable='false' style='position:absolute; left:"+this.mouseX+"; top:"+this.mouseY+"; height:"+this.brushSize+"px; width:"+this.brushSize+"px; -moz-user-select:none'><circle cx='"+this.radius+"' cy='"+this.radius+"' r='"+this.radius+"' fill='"+this.color+"' /></svg>");
+			$("#canvas").append("<svg class='line"+history.getLayerId()+"' draggable='false' style='position:absolute; left:"+this.mouseX+"; top:"+this.mouseY+"; height:"+this.brushSize+"px; width:"+this.brushSize+"px; -moz-user-select:none'><circle cx='"+this.radius+"' cy='"+this.radius+"' r='"+this.radius+"' fill='"+this.color+"' /></svg>");
 		}
 	}
 	
 	addToHistory(){
-		if (paintHistory.undoHistory.length > 0 && paintHistory.undoHistory[paintHistory.undoHistory.length - 1].layerId != paintHistory.getLayerId()){
-			if ($(".line"+paintHistory.getLayerId()).length > 0){
-				paintHistory.addUndoItem(new canvasHistoryItem("brushStroke", paintHistory.getLayerId(), this.color));
-				paintHistory.undoHistory[paintHistory.undoHistory.length - 1].captureBrushStroke(this.brushSize);
+		if (history.undoHistory.length > 0 && history.undoHistory[history.undoHistory.length - 1].layerId != history.getLayerId()){
+			if ($(".line"+history.getLayerId()).length > 0){
+				history.addUndoItem(new canvasHistoryItem("brushStroke", history.getLayerId(), this.color));
+				history.undoHistory[history.undoHistory.length - 1].captureBrushStroke(this.brushSize);
 			}
 		} else {
-			if ($(".line"+paintHistory.getLayerId()).length > 0 && paintHistory.undoHistory.length == 0){
-				paintHistory.addUndoItem(new canvasHistoryItem("brushStroke", paintHistory.getLayerId(), this.color));
-				paintHistory.undoHistory[paintHistory.undoHistory.length - 1].captureBrushStroke(this.brushSize);
+			if ($(".line"+history.getLayerId()).length > 0 && history.undoHistory.length == 0){
+				history.addUndoItem(new canvasHistoryItem("brushStroke", history.getLayerId(), this.color));
+				history.undoHistory[history.undoHistory.length - 1].captureBrushStroke(this.brushSize);
 			}
 		}
+	}
+}
+
+class paintTool {
+	
+	constructor(){
+		this.pointsX = [];
+		this.pointsY = [];
+		this.strokeStyle = document.getElementsByClassName("color-picker")[0].value;
+		this.lineWidth = $(".brush-slider").slider("value");
+	}
+	
+	addPoint(mouseX, mouseY){
+		this.pointsX.push(mouseX);
+		this.pointsY.push(mouseY - 80);
+	}
+	
+	draw(){
+		context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+		
+		context.strokeStyle = this.strokeStyle;
+		context.lineJoin = "round";
+		context.lineWidth = this.lineWidth;
+		
+		for (var i=0; i < this.pointsX.length; i++){
+			context.beginPath();
+			if (i){
+				context.moveTo(this.pointsX[i-1], this.pointsY[i-1]);
+			} else {
+				context.moveTo(this.pointsX[i]-1, this.pointsY[i]);
+			}
+			context.lineTo(this.pointsX[i], this.pointsY[i]);
+			context.closePath();
+			context.stroke();
+		}
+	}
+	
+	setColor(color) {
+		this.strokeStyle = color;
+	}
+	
+	setLineWidth(width) {
+		this.lineWidth = width;
 	}
 }
 
@@ -78,7 +121,7 @@ class canvasHistoryItem {
 	}
 }
 
-class canvasHistory {
+class canvasControl {
 	
 	constructor(){
 		this.undoHistory = [];
@@ -88,7 +131,7 @@ class canvasHistory {
 	
 	addUndoItem(item){
 		this.undoHistory.push(item);
-		paintHistory.redoHistory.length = 0;
+		history.redoHistory.length = 0;
 		this.checkHistoryButtons();
 	}
 	
@@ -129,12 +172,12 @@ class canvasHistory {
 	}
 	
 	checkHistoryButtons(){
-		if (paintHistory.undoHistory.length > 0){
+		if (history.undoHistory.length > 0){
 			document.getElementById("undo-button").classList.remove("header-button-disabled");
 		} else {
 			document.getElementById("undo-button").classList.add("header-button-disabled");
 		}
-		if (paintHistory.redoHistory.length > 0){
+		if (history.redoHistory.length > 0){
 			document.getElementById("redo-button").classList.remove("header-button-disabled");
 		} else {
 			document.getElementById("redo-button").classList.add("header-button-disabled");
