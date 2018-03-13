@@ -58,7 +58,7 @@ $("#canvas").mouseleave(function(e){
 
 // Clear All button, clears canvas and resets layerId counter
 $(".close").click(function(){
-	$("svg").remove();
+	canvasController.clearCanvas();
 	canvasController.setLayerId(0);
 	canvasController.undoHistory.length = 0;
 	canvasController.redoHistory.length = 0;

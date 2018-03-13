@@ -117,6 +117,10 @@ class canvasControl {
 		return this.layerId;
 	}
 	
+	clearCanvas(){
+		context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+	}
+	
 	undo(){
 		if (!document.getElementById("undo-button").classList.contains("header-button-disabled")){	
 			this.undoHistory[this.undoHistory.length - 1].removeFromCanvas();
