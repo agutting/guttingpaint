@@ -51,6 +51,11 @@ $(document).mouseup(function(){
 	$(document).data('mousedown', false);
 });
 
+// set 'mousedown' flag to FALSE if brush leaves canvas
+$("#canvas").mouseleave(function(e){
+	$(document).data('mousedown', false);
+});
+
 // Clear All button, clears canvas and resets layerId counter
 $(".close").click(function(){
 	$("svg").remove();

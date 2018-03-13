@@ -1,44 +1,3 @@
-class paintBrush {
-	
-	constructor(brushSize = 20){
-		this.canvas = document.getElementById("canvas");
-		this.brushSize = brushSize;
-		this.radius = this.brushSize / 2;
-		this.color = $(".color-picker").val();
-	}
-	
-	setBrushSize(size){
-		this.brushSize = size;
-		this.radius = this.brushSize / 2;
-	}
-	
-	setColor(color){
-		this.color = color;
-	}
-	
-	paint(mouseX, mouseY){
-		if ($(document).data('mousedown')){
-			this.mouseX = mouseX - this.radius;
-			this.mouseY = mouseY - this.radius - 80; // 80 is offset for header height
-			$("#canvas").append("<svg class='line"+history.getLayerId()+"' draggable='false' style='position:absolute; left:"+this.mouseX+"; top:"+this.mouseY+"; height:"+this.brushSize+"px; width:"+this.brushSize+"px; -moz-user-select:none'><circle cx='"+this.radius+"' cy='"+this.radius+"' r='"+this.radius+"' fill='"+this.color+"' /></svg>");
-		}
-	}
-	
-	addToHistory(){
-		if (history.undoHistory.length > 0 && history.undoHistory[history.undoHistory.length - 1].layerId != history.getLayerId()){
-			if ($(".line"+history.getLayerId()).length > 0){
-				history.addUndoItem(new canvasHistoryItem("brushStroke", history.getLayerId(), this.color));
-				history.undoHistory[history.undoHistory.length - 1].captureBrushStroke(this.brushSize);
-			}
-		} else {
-			if ($(".line"+history.getLayerId()).length > 0 && history.undoHistory.length == 0){
-				history.addUndoItem(new canvasHistoryItem("brushStroke", history.getLayerId(), this.color));
-				history.undoHistory[history.undoHistory.length - 1].captureBrushStroke(this.brushSize);
-			}
-		}
-	}
-}
-
 class paintTool {
 	
 	constructor(){
@@ -54,23 +13,19 @@ class paintTool {
 	}
 	
 	draw(){
-		context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-		
+		context.beginPath();
 		context.strokeStyle = this.strokeStyle;
 		context.lineJoin = "round";
 		context.lineWidth = this.lineWidth;
 		
-		for (var i=0; i < this.pointsX.length; i++){
-			context.beginPath();
-			if (i){
-				context.moveTo(this.pointsX[i-1], this.pointsY[i-1]);
-			} else {
-				context.moveTo(this.pointsX[i]-1, this.pointsY[i]);
-			}
-			context.lineTo(this.pointsX[i], this.pointsY[i]);
-			context.closePath();
-			context.stroke();
+		if (this.pointsX.length > 1){
+			context.moveTo(this.pointsX[this.pointsX.length-2], this.pointsY[this.pointsY.length-2]);
+		} else {
+			context.moveTo(this.pointsX[i]-1, this.pointsY[i]);
 		}
+		context.lineTo(this.pointsX[this.pointsX.length-1], this.pointsY[this.pointsX.length-1]);
+		context.closePath();
+		context.stroke();
 	}
 	
 	setColor(color) {
@@ -79,6 +34,13 @@ class paintTool {
 	
 	setLineWidth(width) {
 		this.lineWidth = width;
+	}
+}
+
+class paintHistoryAction {
+	
+	constructor(){
+		
 	}
 }
 
