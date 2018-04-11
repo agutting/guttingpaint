@@ -29,19 +29,16 @@ class paintTool {
 	}
 	
 	redraw(){
-		context.beginPath();
 		for (var i = 1; i < this.pointsX.length; i++) {
-			
+			context.beginPath();
 			context.strokeStyle = this.strokeStyle;
 			context.lineJoin = "round";
 			context.lineWidth = this.lineWidth;
-			
 			context.moveTo(this.pointsX[i], this.pointsY[i]);
 			context.lineTo(this.pointsX[i-1], this.pointsY[i-1]);
-			
+			context.closePath();
 			context.stroke();
 		}
-		context.closePath();
 	}
 	
 	setColor(color) {
@@ -140,7 +137,7 @@ class canvasControl {
 	
 	redrawHistory(){
 		for (var i = 0; i < this.undoHistory.length; i++) {
-			// this.undoHistory[i].
+			this.undoHistory[i].redraw();
 		}
 	}
 	
@@ -148,7 +145,7 @@ class canvasControl {
 		if (!document.getElementById("undo-button").classList.contains("header-button-disabled")){	
 			this.clearCanvas();
 			this.redoHistory.push(this.undoHistory.pop());
-			// this.redrawhistory
+			this.redrawHistory();
 			this.checkHistoryButtons();
 		}
 	}
