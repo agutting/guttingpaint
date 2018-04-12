@@ -1,41 +1,60 @@
-class paintBrush {
+class paintTool {
 	
-	constructor(brushSize = 20){
-		this.canvas = document.getElementById("canvas");
-		this.brushSize = brushSize;
-		this.radius = this.brushSize / 2;
-		this.color = $(".color-picker").val();
+	constructor() {
+		this.pointsX = [];
+		this.pointsY = [];
+		this.strokeStyle = document.getElementsByClassName("color-picker")[0].value;
+		this.lineWidth = $(".brush-slider").slider("value");
 	}
 	
-	setBrushSize(size){
-		this.brushSize = size;
-		this.radius = this.brushSize / 2;
+	addPoint(mouseX, mouseY) {
+		this.pointsX.push(mouseX);
+		this.pointsY.push(mouseY - 80);
 	}
 	
-	setColor(color){
-		this.color = color;
-	}
-	
-	paint(mouseX, mouseY){
-		if ($(document).data('mousedown')){
-			this.mouseX = mouseX - this.radius;
-			this.mouseY = mouseY - this.radius - 80; // 80 is offset for header height
-			$("#canvas").append("<svg class='line"+paintHistory.getLayerId()+"' draggable='false' style='position:absolute; left:"+this.mouseX+"; top:"+this.mouseY+"; height:"+this.brushSize+"px; width:"+this.brushSize+"px; -moz-user-select:none'><circle cx='"+this.radius+"' cy='"+this.radius+"' r='"+this.radius+"' fill='"+this.color+"' /></svg>");
-		}
-	}
-	
-	addToHistory(){
-		if (paintHistory.undoHistory.length > 0 && paintHistory.undoHistory[paintHistory.undoHistory.length - 1].layerId != paintHistory.getLayerId()){
-			if ($(".line"+paintHistory.getLayerId()).length > 0){
-				paintHistory.addUndoItem(new canvasHistoryItem("brushStroke", paintHistory.getLayerId(), this.color));
-				paintHistory.undoHistory[paintHistory.undoHistory.length - 1].captureBrushStroke(this.brushSize);
-			}
+	draw(){
+		context.beginPath();
+		context.strokeStyle = this.strokeStyle;
+		context.lineJoin = "round";
+		context.lineWidth = this.lineWidth;
+		
+		if (this.pointsX.length > 1){
+			context.moveTo(this.pointsX[this.pointsX.length-2], this.pointsY[this.pointsY.length-2]);
 		} else {
-			if ($(".line"+paintHistory.getLayerId()).length > 0 && paintHistory.undoHistory.length == 0){
-				paintHistory.addUndoItem(new canvasHistoryItem("brushStroke", paintHistory.getLayerId(), this.color));
-				paintHistory.undoHistory[paintHistory.undoHistory.length - 1].captureBrushStroke(this.brushSize);
-			}
+			context.moveTo(this.pointsX[0]-1, this.pointsY[0]);
 		}
+		context.lineTo(this.pointsX[this.pointsX.length-1], this.pointsY[this.pointsX.length-1]);
+		context.closePath();
+		context.stroke();
+	}
+	
+	redraw(){
+		for (var i = 1; i < this.pointsX.length; i++) {
+			context.beginPath();
+			context.strokeStyle = this.strokeStyle;
+			context.lineJoin = "round";
+			context.lineWidth = this.lineWidth;
+			context.moveTo(this.pointsX[i], this.pointsY[i]);
+			context.lineTo(this.pointsX[i-1], this.pointsY[i-1]);
+			context.closePath();
+			context.stroke();
+		}
+	}
+	
+	setColor(color) {
+		this.strokeStyle = color;
+	}
+	
+	setLineWidth(width) {
+		this.lineWidth = width;
+	}
+}
+
+class paintHistoryAction {
+	
+	constructor(pointsX, pointsY){
+		this.pointsX = pointsX;
+		this.pointsY = pointsY;
 	}
 }
 
@@ -47,7 +66,7 @@ class canvasHistoryItem {
 		this.color = color;
 	}
 	
-	captureBrushStroke(brushSize){
+	captureBrushStroke(brushSize) {
 		this.brushSize = brushSize;
 		var elements = $(".line"+this.layerId);
 		var brushDataArray = [];
@@ -60,7 +79,7 @@ class canvasHistoryItem {
 		this.brushDataArray = brushDataArray;
 	}
 	
-	createBrushStroke(){
+	createBrushStroke() {
 		var brushSize = this.brushSize;
 		var layerId = this.layerId;
 		var color = this.color;
@@ -70,71 +89,86 @@ class canvasHistoryItem {
 		});
 	}
 	
-	removeFromCanvas(){
+	removeFromCanvas() {
 		var line = document.getElementsByClassName("line"+this.layerId);
-		while(line[0]){
+		while(line[0]) {
 			line[0].remove();
 		}
 	}
 }
 
-class canvasHistory {
+class canvasControl {
 	
-	constructor(){
+	constructor() {
+		this.canvas = document.getElementById('canvas');
 		this.undoHistory = [];
 		this.redoHistory = [];
 		this.layerId = 0;
 	}
 	
-	addUndoItem(item){
+	addUndoItem(item) {
 		this.undoHistory.push(item);
-		paintHistory.redoHistory.length = 0;
+		canvasController.redoHistory.length = 0;
 		this.checkHistoryButtons();
 	}
 	
-	addRedoItem(item){
+	addRedoItem(item) {
 		this.redoHistory.push(item);
 	}
 	
-	incrementLayerId(){
+	incrementLayerId() {
 		this.layerId++;
 	}
 	
-	decrementLayerId(){
+	decrementLayerId() {
 		this.layerId--;
 	}
 	
-	setLayerId(id){
+	setLayerId(id) {
 		this.layerId = id;
 	}
 	
-	getLayerId(){
+	getLayerId() {
 		return this.layerId;
 	}
 	
-	undo(){
+	clearCanvas() {
+		context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+		context.fillStyle = "white";
+		context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+	}
+	
+	redrawHistory(){
+		for (var i = 0; i < this.undoHistory.length; i++) {
+			this.undoHistory[i].redraw();
+		}
+	}
+	
+	undo() {
 		if (!document.getElementById("undo-button").classList.contains("header-button-disabled")){	
-			this.undoHistory[this.undoHistory.length - 1].removeFromCanvas();
+			this.clearCanvas();
 			this.redoHistory.push(this.undoHistory.pop());
+			this.redrawHistory();
 			this.checkHistoryButtons();
 		}
 	}
 	
-	redo(){
+	redo() {
 		if (!document.getElementById("redo-button").classList.contains("header-button-disabled")){
-			this.redoHistory[this.redoHistory.length - 1].createBrushStroke();
+			this.clearCanvas();
 			this.undoHistory.push(this.redoHistory.pop());
+			this.redrawHistory();
 			this.checkHistoryButtons();
 		}
 	}
 	
-	checkHistoryButtons(){
-		if (paintHistory.undoHistory.length > 0){
+	checkHistoryButtons() {
+		if (canvasController.undoHistory.length > 0){
 			document.getElementById("undo-button").classList.remove("header-button-disabled");
 		} else {
 			document.getElementById("undo-button").classList.add("header-button-disabled");
 		}
-		if (paintHistory.redoHistory.length > 0){
+		if (canvasController.redoHistory.length > 0) {
 			document.getElementById("redo-button").classList.remove("header-button-disabled");
 		} else {
 			document.getElementById("redo-button").classList.add("header-button-disabled");

@@ -3,7 +3,7 @@ body {	margin: 0px;}.brush-slider {
 }.button-container {	height: 70px;	float: left;	margin-top: 5px;	margin-bottom: 5px;	padding-left: 20px;	padding-right: 20px;	text-align: center;}.button-seperator {	border-right-style: solid;	border-right-width: 1px;}
 
 #canvas {
-	position: absolute;	top: 80;	bottom: 0;	left: 0;	right: 0;
+	width: 100%;	height: calc(100% - 80px);
 }
 
 .close {
