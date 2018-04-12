@@ -17,6 +17,8 @@ $(".brush-slider").slider({
 
 // initialize painting action history object, handles all undo/redo functionality by storing an object representing each action
 var canvasController = new canvasControl();
+// part of clearCanvas() is to set a white background for accuracy in saved files, so also do this on startup
+canvasController.clearCanvas();
 
 // initialize default paintTool
 var brush = new paintTool();

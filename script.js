@@ -100,6 +100,7 @@ class canvasHistoryItem {
 class canvasControl {
 	
 	constructor() {
+		this.canvas = document.getElementById('canvas');
 		this.undoHistory = [];
 		this.redoHistory = [];
 		this.layerId = 0;
@@ -133,6 +134,8 @@ class canvasControl {
 	
 	clearCanvas() {
 		context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+		context.fillStyle = "white";
+		context.fillRect(0, 0, this.canvas.width, this.canvas.height);
 	}
 	
 	redrawHistory(){
@@ -152,8 +155,9 @@ class canvasControl {
 	
 	redo() {
 		if (!document.getElementById("redo-button").classList.contains("header-button-disabled")){
-			this.redoHistory[this.redoHistory.length - 1].createBrushStroke();
+			this.clearCanvas();
 			this.undoHistory.push(this.redoHistory.pop());
+			this.redrawHistory();
 			this.checkHistoryButtons();
 		}
 	}
