@@ -61,6 +61,7 @@ class paintHistoryAction {
 class canvasHistoryItem {
 	
 	constructor(itemType, layerId, color){
+		this.canvas = document.getElementById('canvas');
 		this.itemType = itemType;
 		this.layerId = layerId;
 		this.color = color;
@@ -85,7 +86,7 @@ class canvasHistoryItem {
 		var color = this.color;
 		var radius = brushSize / 2;
 		this.brushDataArray.forEach(function(item, index){
-			$("#canvas").append("<svg class='line"+layerId+"' draggable='false' style='position:absolute; left:"+item.mouseX+"; top:"+item.mouseY+"; height:"+brushSize+"px; width:"+brushSize+"px; -moz-user-select:none'><circle cx='"+radius+"' cy='"+radius+"' r='"+radius+"' fill='"+color+"' /></svg>");
+			this.canvas.append("<svg class='line"+layerId+"' draggable='false' style='position:absolute; left:"+item.mouseX+"; top:"+item.mouseY+"; height:"+brushSize+"px; width:"+brushSize+"px; -moz-user-select:none'><circle cx='"+radius+"' cy='"+radius+"' r='"+radius+"' fill='"+color+"' /></svg>");
 		});
 	}
 	
@@ -138,10 +139,17 @@ class canvasControl {
 		context.fillRect(0, 0, this.canvas.width, this.canvas.height);
 	}
 	
-	redrawHistory(){
+	redrawHistory() {
 		for (var i = 0; i < this.undoHistory.length; i++) {
 			this.undoHistory[i].redraw();
 		}
+	}
+
+	resizeCanvas() {
+		this.canvas.style.width = window.innerWidth;
+		this.canvas.style.height = window.innerHeight - 80;
+		context.width = window.innerWidth;
+		context.height = window.innerHeight - 80;
 	}
 	
 	undo() {

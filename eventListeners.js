@@ -34,6 +34,9 @@ var brush = new paintTool();
 	// brush.setLineWidth(ui.value);
 // });
 
+// redraw current canvas when window is resized
+window.addEventListener("resize", () => { canvasController.clearCanvas(); canvasController.redrawHistory(); canvasController.resizeCanvas(); });
+
 // set 'mousedown' flag for mousemove listener, increment layerId
 $("#canvas").mousedown(function(e){
 	canvasController.incrementLayerId();
@@ -71,6 +74,7 @@ $(".close").click(function(){
 	canvasController.setLayerId(0);
 	canvasController.undoHistory.length = 0;
 	canvasController.redoHistory.length = 0;
+	canvasController.checkHistoryButtons();
 });
 
 $("#undo-button").click(function(){
