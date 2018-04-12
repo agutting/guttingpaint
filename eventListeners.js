@@ -9,7 +9,7 @@ $(".brush-slider").slider({
 	}
 });
 
-// initialize painting action history object, handles all undo/redo functionality by storing an object representing each action
+// initialize painting action history object, handles all undo/redo functionality by storing an object representing each action 
 var paintHistory = new canvasHistory;
 // initialize default painting action, paintBrush
 var brush = new paintBrush();
