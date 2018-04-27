@@ -3,7 +3,7 @@ class paintTool {
 	constructor() {
 		this.pointsX = [];
 		this.pointsY = [];
-		this.strokeStyle = document.getElementsByClassName("color-picker")[0].value;
+		this.strokeStyle = $(".selected").children().css("background-color");
 		this.lineWidth = $(".brush-slider").slider("value");
 	}
 	
@@ -148,8 +148,9 @@ class canvasControl {
 	resizeCanvas() {
 		this.canvas.style.width = window.innerWidth;
 		this.canvas.style.height = window.innerHeight - 80;
-		context.width = window.innerWidth;
-		context.height = window.innerHeight - 80;
+		this.canvas.width = window.innerWidth;
+		this.canvas.height = window.innerHeight - 80;
+		this.redrawHistory();
 	}
 	
 	undo() {

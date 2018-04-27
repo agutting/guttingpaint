@@ -23,6 +23,10 @@ canvasController.clearCanvas();
 // initialize default paintTool
 var brush = new paintTool();
 
+$(".color-box-inner").click(e => {
+	$(".color-box-outer").removeClass("selected");
+	$(e.target).parent().addClass("selected");
+});
 
 // update brush color when color picker value changes
 // $(".color-picker").on("change", function(e){
