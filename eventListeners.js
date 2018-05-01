@@ -10,7 +10,7 @@ $(".brush-slider").slider({
 	min: 2,
 	max: 50,
 	step: 2,
-	slide: function(e, ui){
+	slide: (e, ui) => {
 		$(".current-brush-size").text(ui.value);
 	}
 });
@@ -33,11 +33,6 @@ $("#custom-color-button").click(() => {
 	 canvasController.addCustomColor(e.target.value);
  });
 
-// sync displayed brush size to slider value as slider changes
-// $(".brush-slider").on("slide", function(e, ui){
-	// brush.setLineWidth(ui.value);
-// });
-
 // redraw current canvas when window is resized
 window.addEventListener("resize", () => {
 	canvasController.clearCanvas();
@@ -46,7 +41,7 @@ window.addEventListener("resize", () => {
 });
 
 // set 'mousedown' flag for mousemove listener, increment layerId
-$("#canvas").mousedown(function(e){
+$("#canvas").mousedown(e => {
 	canvasController.incrementLayerId();
 	$(document).data('mousedown', true);
 	brush = new paintTool();
@@ -55,7 +50,7 @@ $("#canvas").mousedown(function(e){
 });
 
 // executes painting action if mouse is down
-$("#canvas").mousemove(function(e){
+$("#canvas").mousemove(e => {
 	if ($(document).data('mousedown')){
 		brush.addPoint(e.pageX, e.pageY);
 		brush.draw();
@@ -63,13 +58,13 @@ $("#canvas").mousemove(function(e){
 });
 
 // set 'mousedown' flag to FALSE and record painting action to history
-$("#canvas").mouseup(function(){
+$("#canvas").mouseup(() => {
 	$(document).data('mousedown', false);
 	canvasController.addUndoItem(brush);
 });
 
 // set 'mousedown' flag to FALSE if brush leaves canvas and record painting action to history
-$("#canvas").mouseleave(function(e){
+$("#canvas").mouseleave(() => {
 	if ($(document).data('mousedown')) {
 		$(document).data('mousedown', false);
 		canvasController.addUndoItem(brush);
@@ -77,7 +72,7 @@ $("#canvas").mouseleave(function(e){
 });
 
 // Clear All button, clears canvas and resets layerId counter
-$(".close").click(function(){
+$(".close").click(() => {
 	canvasController.clearCanvas();
 	canvasController.setLayerId(0);
 	canvasController.undoHistory.length = 0;
@@ -85,10 +80,10 @@ $(".close").click(function(){
 	canvasController.checkHistoryButtons();
 });
 
-$("#undo-button").click(function(){
+$("#undo-button").click(() => {
 	canvasController.undo();
 });
 
-$("#redo-button").click(function(){
+$("#redo-button").click(() => {
 	canvasController.redo();
 });

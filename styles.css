@@ -8,12 +8,11 @@ body {
 
 .brush-slider {
 	margin-top: 12px;
-	margin-bottom: 14px;
+	margin-bottom: 20px;
 }
 
 .button-container {
 	height: 70px;
-	float: left;
 	margin-top: 5px;
 	margin-bottom: 5px;
 	padding-left: 20px;
@@ -21,7 +20,20 @@ body {
 	text-align: center;
 }
 
-.button-seperator {
+.button-container.left {
+	float: left;
+}
+
+.button-container.right {
+	float: right;
+}
+
+.button-seperator-left {
+	border-left-style: solid;
+	border-left-width: 1px;
+}
+
+.button-seperator-right {
 	border-right-style: solid;
 	border-right-width: 1px;
 }
@@ -180,8 +192,7 @@ body {
 	width: 200px;
 	height: 70px;
 	float: left;
-	margin-top: 5px;
-	margin-bottom: 5px;
+	margin-top: 10px;
 	padding-left: 20px;
 	padding-right: 20px;
 	text-align: center;

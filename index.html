@@ -100,21 +100,24 @@
 		   			<div class="color-box-inner color29"></div>
 		   		</div>
 		   	</div>
-			<div class="button-container button-seperator">
-				<input id="browser-color-picker" type="color" />
-				<i id="custom-color-button" class="fas fa-eye-dropper header-button"></i><br>Custom
-			</div>
-		   	<div class="slider-container button-seperator">
+		   	<div class="button-container left button-seperator-right">
+		   		<input id="browser-color-picker" type="color" />
+		   		<i id="custom-color-button" class="fas fa-eye-dropper header-button"></i><br>Custom
+		   	</div>
+		   	<div class="slider-container">
 		   		<div class="brush-slider"></div>Brush Size: <span class="current-brush-size">20</span>
 		   	</div>
-		   	<div class="button-container button-seperator">
-		   		<i id="undo-button" class="far fa-arrow-alt-circle-left header-button header-button-disabled"></i><br>Undo
-		   	</div>
-		   	<div class="button-container button-seperator">
+			<div class="button-container left button-seperator-left">
+				<i id="paint-brush-button" class="fas fa-paint-brush header-button"></i><br>Brush
+			</div>
+			<div class="button-container right">
+				<span class="close heavy header-button"></span><br>Clear All
+			</div>
+		   	<div class="button-container right button-seperator-right">
 		   		<i id="redo-button" class="far fa-arrow-alt-circle-right header-button header-button-disabled"></i><br>Redo
 		   	</div>
-		   	<div class="button-container">
-		   		<span class="close heavy header-button"></span><br>Clear All
+		   	<div class="button-container right button-seperator-right button-seperator-left">
+		   		<i id="undo-button" class="far fa-arrow-alt-circle-left header-button header-button-disabled"></i><br>Undo
 		   	</div>
 		   </div>
 <canvas id="canvas"></canvas>
