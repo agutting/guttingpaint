@@ -106,6 +106,7 @@ class canvasControl {
 		this.redoHistory = [];
 		this.layerId = 0;
 		this.customColorCounter = 20;
+		this.activeTool = "brush";
 	}
 	
 	addUndoItem(item) {
@@ -134,11 +135,11 @@ class canvasControl {
 		return this.layerId;
 	}
 
-	addCustomColor(color) {
+	addCustomColor(color) { // sets a bottom-row square's background to color selected in browser color picker
 		document.getElementsByClassName("color" + this.customColorCounter)[0].style.background = color;
 		$(".color-box-outer").removeClass("selected");
 		$(".color" + this.customColorCounter).parent().addClass("selected");
-		if (this.customColorCounter == 29) {
+		if (this.customColorCounter == 29) { // progress through squares from left to right, loop at end
 			this.customColorCounter = 20;
 		} else {
 			this.customColorCounter++;
@@ -147,17 +148,17 @@ class canvasControl {
 	
 	clearCanvas() {
 		context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-		context.fillStyle = "white";
-		context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+		context.fillStyle = "white"; // canvas is naturally black, but empty dom is white; this prevents discrepancy in
+		context.fillRect(0, 0, this.canvas.width, this.canvas.height); // backgrounds between on-screen and saved images
 	}
 	
 	redrawHistory() {
 		for (var i = 0; i < this.undoHistory.length; i++) {
-			this.undoHistory[i].redraw();
+			this.undoHistory[i].redraw(); // every type of drawing action stored in history has a redraw() function
 		}
 	}
 
-	resizeCanvas() {
+	resizeCanvas() { // adjust both types of canvas dimensions & redraw to prevent image distortion & brush offset from pointer
 		this.canvas.style.width = window.innerWidth;
 		this.canvas.style.height = window.innerHeight - 80;
 		this.canvas.width = window.innerWidth;
@@ -183,7 +184,7 @@ class canvasControl {
 		}
 	}
 	
-	checkHistoryButtons() {
+	checkHistoryButtons() { // enable/disable undo/redo buttons when there is/isn't available history
 		if (canvasController.undoHistory.length > 0){
 			document.getElementById("undo-button").classList.remove("header-button-disabled");
 		} else {
@@ -195,4 +196,46 @@ class canvasControl {
 			document.getElementById("redo-button").classList.add("header-button-disabled");
 		}
 	}
+}
+
+class eventListenerControl {
+
+	constructor() {
+		this.currentTool = "brush";
+	}
+
+	removeCanvasListeners() {
+		$("#canvas").off("mousedown mousemove mouseup mouseleave");
+	}
+
+	setBrushListeners() {
+		$("#canvas").mousedown(e => {
+			canvasController.incrementLayerId();
+			$(document).data('mousedown', true);
+			brush = new paintTool();
+			brush.addPoint(e.pageX, e.pageY);
+			brush.draw();
+		});
+
+		$("#canvas").mousemove(e => {
+			if ($(document).data('mousedown')) {
+				brush.addPoint(e.pageX, e.pageY);
+				brush.draw();
+			}
+		});
+
+		$("#canvas").mouseup(() => {
+			$(document).data('mousedown', false);
+			canvasController.addUndoItem(brush);
+		});
+
+		$("#canvas").mouseleave(() => {
+			if ($(document).data('mousedown')) {
+				$(document).data('mousedown', false);
+				canvasController.addUndoItem(brush);
+			}
+		});
+	}
+
+
 }

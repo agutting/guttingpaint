@@ -11,14 +11,20 @@ $(".brush-slider").slider({
 	max: 50,
 	step: 2,
 	slide: (e, ui) => {
-		$(".current-brush-size").text(ui.value);
+		$(".current-brush-size").text(ui.value); // sync textual brush size display on change
 	}
 });
+var brush;
 
-// initialize canvas controller object, handles menu functions like custom colors, undo/redo, clearing canvas
-var canvasController = new canvasControl();
+// initialize canvasController object, handles menu functions like custom colors, undo/redo, clearing canvas
+const canvasController = new canvasControl();
 // part of clearCanvas() is to set a white background for accuracy in saved files, so also do this on startup
 canvasController.clearCanvas();
+
+// initialize eventListenerController, removes/adds canvas listeners when switching tools
+const eventListenerController = new eventListenerControl(); 
+// add event listeners for default tool, paint brush
+eventListenerController.setBrushListeners();
 
 $(".color-box-inner").click(e => {
 	$(".color-box-outer").removeClass("selected");
@@ -35,40 +41,7 @@ $("#custom-color-button").click(() => {
 
 // redraw current canvas when window is resized
 window.addEventListener("resize", () => {
-	canvasController.clearCanvas();
-	canvasController.redrawHistory();
 	canvasController.resizeCanvas();
-});
-
-// set 'mousedown' flag for mousemove listener, increment layerId
-$("#canvas").mousedown(e => {
-	canvasController.incrementLayerId();
-	$(document).data('mousedown', true);
-	brush = new paintTool();
-	brush.addPoint(e.pageX, e.pageY);
-	brush.draw();
-});
-
-// executes painting action if mouse is down
-$("#canvas").mousemove(e => {
-	if ($(document).data('mousedown')){
-		brush.addPoint(e.pageX, e.pageY);
-		brush.draw();
-	}
-});
-
-// set 'mousedown' flag to FALSE and record painting action to history
-$("#canvas").mouseup(() => {
-	$(document).data('mousedown', false);
-	canvasController.addUndoItem(brush);
-});
-
-// set 'mousedown' flag to FALSE if brush leaves canvas and record painting action to history
-$("#canvas").mouseleave(() => {
-	if ($(document).data('mousedown')) {
-		$(document).data('mousedown', false);
-		canvasController.addUndoItem(brush);
-	}
 });
 
 // Clear All button, clears canvas and resets layerId counter
