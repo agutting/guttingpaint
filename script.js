@@ -105,6 +105,7 @@ class canvasControl {
 		this.undoHistory = [];
 		this.redoHistory = [];
 		this.layerId = 0;
+		this.customColorCounter = 20;
 	}
 	
 	addUndoItem(item) {
@@ -116,7 +117,7 @@ class canvasControl {
 	addRedoItem(item) {
 		this.redoHistory.push(item);
 	}
-	
+
 	incrementLayerId() {
 		this.layerId++;
 	}
@@ -131,6 +132,17 @@ class canvasControl {
 	
 	getLayerId() {
 		return this.layerId;
+	}
+
+	addCustomColor(color) {
+		document.getElementsByClassName("color" + this.customColorCounter)[0].style.background = color;
+		$(".color-box-outer").removeClass("selected");
+		$(".color" + this.customColorCounter).parent().addClass("selected");
+		if (this.customColorCounter == 29) {
+			this.customColorCounter = 20;
+		} else {
+			this.customColorCounter++;
+		}
 	}
 	
 	clearCanvas() {

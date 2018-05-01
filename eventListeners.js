@@ -15,23 +15,23 @@ $(".brush-slider").slider({
 	}
 });
 
-// initialize painting action history object, handles all undo/redo functionality by storing an object representing each action
+// initialize canvas controller object, handles menu functions like custom colors, undo/redo, clearing canvas
 var canvasController = new canvasControl();
 // part of clearCanvas() is to set a white background for accuracy in saved files, so also do this on startup
 canvasController.clearCanvas();
-
-// initialize default paintTool
-var brush = new paintTool();
 
 $(".color-box-inner").click(e => {
 	$(".color-box-outer").removeClass("selected");
 	$(e.target).parent().addClass("selected");
 });
 
-// update brush color when color picker value changes
-// $(".color-picker").on("change", function(e){
-	// brush.setColor(e.target.value);
-// });
+$("#custom-color-button").click(() => {
+	$("#browser-color-picker").click();
+});
+
+ $("#browser-color-picker").on("change", e => {
+	 canvasController.addCustomColor(e.target.value);
+ });
 
 // sync displayed brush size to slider value as slider changes
 // $(".brush-slider").on("slide", function(e, ui){
@@ -39,7 +39,11 @@ $(".color-box-inner").click(e => {
 // });
 
 // redraw current canvas when window is resized
-window.addEventListener("resize", () => { canvasController.clearCanvas(); canvasController.redrawHistory(); canvasController.resizeCanvas(); });
+window.addEventListener("resize", () => {
+	canvasController.clearCanvas();
+	canvasController.redrawHistory();
+	canvasController.resizeCanvas();
+});
 
 // set 'mousedown' flag for mousemove listener, increment layerId
 $("#canvas").mousedown(function(e){

@@ -2,6 +2,10 @@ body {
 	margin: 0px;
 }
 
+#browser-color-picker {
+	display: none;
+}
+
 .brush-slider {
 	margin-top: 12px;
 	margin-bottom: 14px;
