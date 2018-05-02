@@ -18,13 +18,11 @@ var brush;
 
 // initialize canvasController object, handles menu functions like custom colors, undo/redo, clearing canvas
 const canvasController = new canvasControl();
+// activate default tool, brush
+canvasController.activateBrush();
 // part of clearCanvas() is to set a white background for accuracy in saved files, so also do this on startup
 canvasController.clearCanvas();
 
-// initialize eventListenerController, removes/adds canvas listeners when switching tools
-const eventListenerController = new eventListenerControl(); 
-// add event listeners for default tool, paint brush
-eventListenerController.setBrushListeners();
 
 $(".color-box-inner").click(e => {
 	$(".color-box-outer").removeClass("selected");

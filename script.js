@@ -107,6 +107,13 @@ class canvasControl {
 		this.layerId = 0;
 		this.customColorCounter = 20;
 		this.activeTool = "brush";
+		this.eventListenerController = new eventListenerControl();
+	}
+
+	activateBrush() {
+		this.eventListenerController.removeCanvasListeners();
+		this.eventListenerController.setBrushListeners();
+		$("#paint-brush-button").addClass("active-tool");
 	}
 	
 	addUndoItem(item) {
