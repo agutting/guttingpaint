@@ -52,14 +52,15 @@ class paintTool {
 
 class shapeTool {
 
-	constructor(shape, origMouseX, origMouseY) {
+	constructor(shape, context, lineWidth, strokeStyle, origMouseX, origMouseY) {
 		this.shape = shape;
-		this.strokeStyle = $(".selected").children().css("background-color");
-		this.lineWidth = $(".brush-slider").slider("value");
+		this.strokeStyle = strokeStyle;
+		this.lineWidth = lineWidth;
 		this.originX = origMouseX;
 		this.originY = origMouseY;
 		this.finalX;
 		this.finalY;
+		this.context = context;
 	}
 
 	draw(mouseX, mouseY) {
@@ -76,16 +77,16 @@ class shapeTool {
 	}
 
 	drawRectangle(mouseX, mouseY) {
-		context.beginPath();
-		context.strokeStyle = this.strokeStyle;
-		context.lineJoin = "miter";
-		context.lineWidth = this.lineWidth;
-		context.moveTo(this.originX, this.originY - 80);
-		context.lineTo(mouseX, this.originY - 80);
-		context.lineTo(mouseX, mouseY - 80);
-		context.lineTo(this.originX, mouseY - 80);
-		context.closePath();
-		context.stroke();
+		this.context.beginPath();
+		this.context.strokeStyle = this.strokeStyle;
+		this.context.lineJoin = "miter";
+		this.context.lineWidth = this.lineWidth;
+		this.context.moveTo(this.originX, this.originY - 80);
+		this.context.lineTo(mouseX, this.originY - 80);
+		this.context.lineTo(mouseX, mouseY - 80);
+		this.context.lineTo(this.originX, mouseY - 80);
+		this.context.closePath();
+		this.context.stroke();
 	}
 }
 
@@ -265,10 +266,10 @@ class eventListenerControl {
 		});
 	}
 
-	setSquareShapeListeners() {
+	setShapeListeners(shapeName) {
 		$("#canvas").mousedown(e => {
 			$(document).data('mousedown', true);
-			brush = new shapeTool("Rectangle", e.clientX, e.clientY);
+			brush = new shapeTool(shapeName, document.getElementById('canvas').getContext('2d'), $(".brush-slider").slider("value"), $(".selected").children().css("background-color"), e.clientX, e.clientY);
 		});
 
 		$("#canvas").mousemove(e => {
@@ -293,4 +294,87 @@ class eventListenerControl {
 			}
 		});
 	}
+
+	setStaticListeners() {
+		let shapes = document.getElementsByClassName('shape-box-inner');
+		
+		for (let i = 0; i < shapes.length; i++) {
+
+			let ctx = shapes[i].getContext('2d');
+			let shapeName = shapes[i].id;
+			let drawShape = shape => {
+				let brush = new shapeTool(shape, ctx, 1, "rgb(0, 0, 0)", 2, 2 + 80);
+				brush.draw(16, 16 + 80);
+			}
+
+			ctx.fillStyle = 'rgb(215,215,215)'; // initial background color w/ shape
+			ctx.fillRect(0, 0, 18, 18);
+			drawShape(shapeName);
+
+			shapes[i].addEventListener('mouseover', e => { // hover background color w/ shape
+				if (shapes[i].classList.contains('active-shape') == false) { // hover effects only if not active
+					ctx.fillStyle = 'rgb(215, 215, 255)';
+					ctx.fillRect(0, 0, 18, 18);
+					drawShape(shapeName);
+				}
+			});
+			shapes[i].addEventListener('mouseleave', e => { // return to normal background when hover ends
+				if (shapes[i].classList.contains('active-shape') == false) {
+					ctx.fillStyle = 'rgb(215,215,215)';
+					ctx.fillRect(0, 0, 18, 18);
+					drawShape(shapeName);
+				}
+			});
+			shapes[i].addEventListener('click', e => {
+				let allShapes = document.getElementsByClassName('shape-box-inner');
+				for (let n = 0; n < allShapes.length; n++) { // remove active-shape styling from all shapes
+					let ctx2 = allShapes[n].getContext('2d');
+					let shapeName2 = allShapes[n].id;
+					let drawShape2 = shape => {
+						let brush = new shapeTool(shape, ctx2, 1, "rgb(0, 0, 0)", 2, 2 + 80);
+						brush.draw(16, 16 + 80);
+					}
+					allShapes[n].classList.remove('active-shape');
+					ctx2.fillStyle = 'rgb(215,215,215)';
+					ctx2.fillRect(0, 0, 18, 18);
+					drawShape2(shapeName2);
+				}
+				shapes[i].classList.add('active-shape'); // apply active-shape styling to this shape
+				ctx.fillStyle = 'rgb(180,180,255)';
+				ctx.fillRect(0, 0, 18, 18);
+				drawShape(shapeName);
+
+				let activeToolButtons = document.getElementsByClassName('active-tool'); // remove active-tool styling from other tools
+				for (let n = 0; n < activeToolButtons.length; n++) {
+					activeToolButtons[n].classList.remove('active-tool');
+				}
+
+				canvasController.eventListenerController.removeCanvasListeners();
+				canvasController.eventListenerController.setShapeListeners(shapeName);
+			});
+		}
+
+		document.getElementById('paint-brush-button').addEventListener('click', e => {
+
+			e.target.classList.add('active-tool'); // add active-tool styling to this button
+
+			for (let i = 0; i < shapes.length; i++) { // remove active-shape styling and class from all shapes
+				let ctx = shapes[i].getContext('2d');
+				let shapeName = shapes[i].id;
+				let drawShape = shape => {
+					let brush = new shapeTool(shape, ctx, 1, "rgb(0, 0, 0)", 2, 2 + 80);
+					brush.draw(16, 16 + 80);
+				}
+
+				shapes[i].classList.remove('active-shape');
+				ctx.fillStyle = 'rgb(215,215,215)';
+				ctx.fillRect(0, 0, 18, 18);
+				drawShape(shapeName);
+			}
+
+			canvasController.eventListenerController.removeCanvasListeners();
+			canvasController.eventListenerController.setBrushListeners();
+		});
+	}
+	
 }
