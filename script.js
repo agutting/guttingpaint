@@ -50,6 +50,45 @@ class paintTool {
 	}
 }
 
+class shapeTool {
+
+	constructor(shape, origMouseX, origMouseY) {
+		this.shape = shape;
+		this.strokeStyle = $(".selected").children().css("background-color");
+		this.lineWidth = $(".brush-slider").slider("value");
+		this.originX = origMouseX;
+		this.originY = origMouseY;
+		this.finalX;
+		this.finalY;
+	}
+
+	draw(mouseX, mouseY) {
+		eval("this.draw" + this.shape + "(mouseX, mouseY)");
+	}
+
+	redraw() {
+		this.draw(this.finalX, this.finalY);
+	}
+
+	recordFinalCoordinate(mouseX, mouseY) {
+		this.finalX = mouseX;
+		this.finalY = mouseY;
+	}
+
+	drawRectangle(mouseX, mouseY) {
+		context.beginPath();
+		context.strokeStyle = this.strokeStyle;
+		context.lineJoin = "miter";
+		context.lineWidth = this.lineWidth;
+		context.moveTo(this.originX, this.originY - 80);
+		context.lineTo(mouseX, this.originY - 80);
+		context.lineTo(mouseX, mouseY - 80);
+		context.lineTo(this.originX, mouseY - 80);
+		context.closePath();
+		context.stroke();
+	}
+}
+
 class paintHistoryAction {
 	
 	constructor(pointsX, pointsY){
@@ -104,7 +143,6 @@ class canvasControl {
 		this.canvas = document.getElementById('canvas');
 		this.undoHistory = [];
 		this.redoHistory = [];
-		this.layerId = 0;
 		this.customColorCounter = 20;
 		this.activeTool = "brush";
 		this.eventListenerController = new eventListenerControl();
@@ -124,22 +162,6 @@ class canvasControl {
 	
 	addRedoItem(item) {
 		this.redoHistory.push(item);
-	}
-
-	incrementLayerId() {
-		this.layerId++;
-	}
-	
-	decrementLayerId() {
-		this.layerId--;
-	}
-	
-	setLayerId(id) {
-		this.layerId = id;
-	}
-	
-	getLayerId() {
-		return this.layerId;
 	}
 
 	addCustomColor(color) { // sets a bottom-row square's background to color selected in browser color picker
@@ -217,7 +239,6 @@ class eventListenerControl {
 
 	setBrushListeners() {
 		$("#canvas").mousedown(e => {
-			canvasController.incrementLayerId();
 			$(document).data('mousedown', true);
 			brush = new paintTool();
 			brush.addPoint(e.pageX, e.pageY);
@@ -244,5 +265,32 @@ class eventListenerControl {
 		});
 	}
 
+	setSquareShapeListeners() {
+		$("#canvas").mousedown(e => {
+			$(document).data('mousedown', true);
+			brush = new shapeTool("Rectangle", e.clientX, e.clientY);
+		});
 
+		$("#canvas").mousemove(e => {
+			if ($(document).data('mousedown')) {
+				canvasController.clearCanvas();
+				canvasController.redrawHistory();
+				brush.draw(e.clientX, e.clientY);
+			}
+		});
+
+		$("#canvas").mouseup(e => {
+			$(document).data('mousedown', false);
+			brush.recordFinalCoordinate(e.clientX, e.clientY);
+			canvasController.addUndoItem(brush);
+		});
+
+		$("#canvas").mouseleave(e => {
+			if ($(document).data('mousedown')) {
+				$(document).data('mousedown', false);
+				brush.recordFinalCoordinate(e.clientX, e.clientY);
+				canvasController.addUndoItem(brush);
+			}
+		});
+	}
 }

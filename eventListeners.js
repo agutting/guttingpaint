@@ -23,6 +23,11 @@ canvasController.activateBrush();
 // part of clearCanvas() is to set a white background for accuracy in saved files, so also do this on startup
 canvasController.clearCanvas();
 
+document.getElementsByClassName('shape-icon')[0].width = "18";
+document.getElementsByClassName('shape0')[0].height = "18";
+var ctx = document.getElementsByClassName('shape0')[0].getContext('2d');
+ctx.strokeRect(2, 2, 14, 14);
+
 
 $(".color-box-inner").click(e => {
 	$(".color-box-outer").removeClass("selected");
@@ -45,7 +50,6 @@ window.addEventListener("resize", () => {
 // Clear All button, clears canvas and resets layerId counter
 $(".close").click(() => {
 	canvasController.clearCanvas();
-	canvasController.setLayerId(0);
 	canvasController.undoHistory.length = 0;
 	canvasController.redoHistory.length = 0;
 	canvasController.checkHistoryButtons();
