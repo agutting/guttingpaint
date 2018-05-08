@@ -196,11 +196,11 @@ class shapeTool {
 		let deltaX = Math.abs(this.originX - mouseX);
 		let deltaY = Math.abs(this.originY - mouseY);
 		let centerX = mouseX > this.originX ? this.originX + (deltaX / 2) : this.originX - (deltaX / 2);
-		let innerY = mouseY > this.originY ? this.originY + (0.25 * deltaY) : this.origin - (0.25 * deltaY);
-		let outerY = mouseY > this.originY ? this.originY + (0.75 * deltaY) : this.origin - (0.75 * deltaY);
+		let innerY = mouseY > this.originY ? this.originY + (0.25 * deltaY) : this.originY - (0.25 * deltaY);
+		let outerY = mouseY > this.originY ? this.originY + (0.75 * deltaY) : this.originY - (0.75 * deltaY);
 		this.context.moveTo(centerX, this.originY - 80);
-		this.context.lineTo(mouseX, innerY- 80);
-		this.context.lineTo(mouseX, outerY- 80);
+		this.context.lineTo(mouseX, innerY - 80);
+		this.context.lineTo(mouseX, outerY - 80);
 		this.context.lineTo(centerX, mouseY - 80);
 		this.context.lineTo(this.originX, outerY - 80);
 		this.context.lineTo(this.originX, innerY - 80);
