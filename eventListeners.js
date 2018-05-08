@@ -22,12 +22,7 @@ const canvasController = new canvasControl();
 canvasController.activateBrush();
 // part of clearCanvas() is to set a white background for accuracy in saved files, so also do this on startup
 canvasController.clearCanvas();
-
-
-document.getElementsByClassName('shape-icon')[0].width = "18";
-document.getElementsByClassName('shape-icon')[0].height = "18";
-//var ctx = document.getElementsByClassName('shape-icon')[0].getContext('2d');
-//ctx.strokeRect(2, 2, 14, 14);
+// listeners for toolbar buttons
 canvasController.eventListenerController.setStaticListeners();
 
 

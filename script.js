@@ -76,6 +76,16 @@ class shapeTool {
 		this.finalY = mouseY;
 	}
 
+	drawLine(mouseX, mouseY) {
+		this.context.beginPath();
+		this.context.strokeStyle = this.strokeStyle;
+		this.context.lineJoin = "miter";
+		this.context.lineWidth = this.lineWidth;
+		this.context.moveTo(this.originX, this.originY - 80);
+		this.context.lineTo(mouseX, mouseY - 80);
+		this.context.stroke();
+	}
+
 	drawRectangle(mouseX, mouseY) {
 		this.context.beginPath();
 		this.context.strokeStyle = this.strokeStyle;
@@ -86,6 +96,20 @@ class shapeTool {
 		this.context.lineTo(mouseX, mouseY - 80);
 		this.context.lineTo(this.originX, mouseY - 80);
 		this.context.closePath();
+		this.context.stroke();
+	}
+
+	drawCircle(mouseX, mouseY) {
+		this.context.beginPath();
+		this.context.strokeStyle = this.strokeStyle;
+		this.context.lineJoin = "miter";
+		this.context.lineWidth = this.lineWidth;
+		let deltaX = Math.abs(this.originX - mouseX);
+		let deltaY = Math.abs(this.originY - mouseY);
+		let radius = deltaX > deltaY ? deltaX / 2 : deltaY / 2;
+		let centerX = mouseX > this.originX ? this.originX + (deltaX / 2) : this.originX - (deltaX / 2);
+		let centerY = mouseY > this.originY ? this.originY + (deltaY / 2) - 80 : this.originY - (deltaY / 2) - 80;
+		this.context.arc(centerX, centerY, radius, 0, 2 * Math.PI);
 		this.context.stroke();
 	}
 }
@@ -300,6 +324,8 @@ class eventListenerControl {
 		
 		for (let i = 0; i < shapes.length; i++) {
 
+			shapes[i].height = "18";
+			shapes[i].width = "18";
 			let ctx = shapes[i].getContext('2d');
 			let shapeName = shapes[i].id;
 			let drawShape = shape => {
