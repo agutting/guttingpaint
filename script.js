@@ -99,17 +99,18 @@ class shapeTool {
 		this.context.stroke();
 	}
 
-	drawCircle(mouseX, mouseY) {
+	drawOval(mouseX, mouseY) {
 		this.context.beginPath();
 		this.context.strokeStyle = this.strokeStyle;
 		this.context.lineJoin = "miter";
 		this.context.lineWidth = this.lineWidth;
 		let deltaX = Math.abs(this.originX - mouseX);
 		let deltaY = Math.abs(this.originY - mouseY);
-		let radius = deltaX > deltaY ? deltaX / 2 : deltaY / 2;
-		let centerX = mouseX > this.originX ? this.originX + (deltaX / 2) : this.originX - (deltaX / 2);
-		let centerY = mouseY > this.originY ? this.originY + (deltaY / 2) - 80 : this.originY - (deltaY / 2) - 80;
-		this.context.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+		let radiusX = deltaX / 2;
+		let radiusY = deltaY / 2;
+		let centerX = mouseX > this.originX ? this.originX + radiusX : this.originX - radiusX;
+		let centerY = mouseY > this.originY ? this.originY + radiusY - 80 : this.originY - radiusY - 80;
+		this.context.ellipse(centerX, centerY, radiusX, radiusY, 0, 0, 2 * Math.PI);
 		this.context.stroke();
 	}
 }
