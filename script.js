@@ -64,6 +64,10 @@ class shapeTool {
 	}
 
 	draw(mouseX, mouseY) {
+		this.context.beginPath();
+		this.context.strokeStyle = this.strokeStyle;
+		this.context.lineJoin = "miter";
+		this.context.lineWidth = this.lineWidth;
 		eval("this.draw" + this.shape + "(mouseX, mouseY)");
 	}
 
@@ -77,20 +81,12 @@ class shapeTool {
 	}
 
 	drawLine(mouseX, mouseY) {
-		this.context.beginPath();
-		this.context.strokeStyle = this.strokeStyle;
-		this.context.lineJoin = "miter";
-		this.context.lineWidth = this.lineWidth;
 		this.context.moveTo(this.originX, this.originY - 80);
 		this.context.lineTo(mouseX, mouseY - 80);
 		this.context.stroke();
 	}
 
 	drawRectangle(mouseX, mouseY) {
-		this.context.beginPath();
-		this.context.strokeStyle = this.strokeStyle;
-		this.context.lineJoin = "miter";
-		this.context.lineWidth = this.lineWidth;
 		this.context.moveTo(this.originX, this.originY - 80);
 		this.context.lineTo(mouseX, this.originY - 80);
 		this.context.lineTo(mouseX, mouseY - 80);
@@ -100,10 +96,6 @@ class shapeTool {
 	}
 
 	drawEllipse(mouseX, mouseY) {
-		this.context.beginPath();
-		this.context.strokeStyle = this.strokeStyle;
-		this.context.lineJoin = "miter";
-		this.context.lineWidth = this.lineWidth;
 		let deltaX = Math.abs(this.originX - mouseX);
 		let deltaY = Math.abs(this.originY - mouseY);
 		let radiusX = deltaX / 2;
@@ -115,10 +107,6 @@ class shapeTool {
 	}
 
 	drawRightTriangle(mouseX, mouseY) {
-		this.context.beginPath();
-		this.context.strokeStyle = this.strokeStyle;
-		this.context.lineJoin = "miter";
-		this.context.lineWidth = this.lineWidth;
 		this.context.moveTo(this.originX, this.originY - 80);
 		this.context.lineTo(this.originX, mouseY - 80);
 		this.context.lineTo(mouseX, mouseY - 80);
@@ -127,10 +115,6 @@ class shapeTool {
 	}
 
 	drawIsoscelesTriangleVertical(mouseX, mouseY) {
-		this.context.beginPath();
-		this.context.strokeStyle = this.strokeStyle;
-		this.context.lineJoin = "miter";
-		this.context.lineWidth = this.lineWidth;
 		let deltaX = Math.abs(this.originX - mouseX);
 		let centerX = mouseX > this.originX ? this.originX + (deltaX / 2) : this.originX - (deltaX / 2);
 		this.context.moveTo(centerX, this.originY - 80);
@@ -141,10 +125,6 @@ class shapeTool {
 	}
 
 	drawIsoscelesTriangleHorizontal(mouseX, mouseY) {
-		this.context.beginPath();
-		this.context.strokeStyle = this.strokeStyle;
-		this.context.lineJoin = "miter";
-		this.context.lineWidth = this.lineWidth;
 		let deltaY = Math.abs(this.originY - mouseY);
 		let centerY = mouseY > this.originY ? this.originY + (deltaY / 2) : this.originY - (deltaY / 2);
 		this.context.moveTo(mouseX, centerY- 80);
@@ -155,10 +135,6 @@ class shapeTool {
 	}
 
 	drawDiamond(mouseX, mouseY) {
-		this.context.beginPath();
-		this.context.strokeStyle = this.strokeStyle;
-		this.context.lineJoin = "miter";
-		this.context.lineWidth = this.lineWidth;
 		let deltaX = Math.abs(this.originX - mouseX);
 		let deltaY = Math.abs(this.originY - mouseY);
 		let centerX = mouseX > this.originX ? this.originX + (deltaX / 2) : this.originX - (deltaX / 2);
@@ -172,27 +148,21 @@ class shapeTool {
 	}
 
 	drawPentagon(mouseX, mouseY) {
-		this.context.beginPath();
-		this.context.strokeStyle = this.strokeStyle;
-		this.context.lineJoin = "miter";
-		this.context.lineWidth = this.lineWidth;
 		let deltaX = Math.abs(this.originX - mouseX);
 		let deltaY = Math.abs(this.originY - mouseY);
 		let centerX = mouseX > this.originX ? this.originX + (deltaX / 2) : this.originX - (deltaX / 2);
+		let innerX = mouseX > this.originX ? this.originX + (0.2 * deltaX) : this.originX - (0.2 * deltaX);
+		let outerX = mouseX > this.originX ? this.originX + (0.8 * deltaX) : this.originX - (0.8 * deltaX);
 		this.context.moveTo(centerX, this.originY - 80);
 		this.context.lineTo(mouseX, mouseY > this.originY ? this.originY + (0.4 * deltaY) - 80 : this.originY - (0.4 * deltaY) - 80);
-		this.context.lineTo(mouseX > this.originX ? this.originX + (0.8 * deltaX) : this.originX - (0.8 * deltaX), mouseY - 80);
-		this.context.lineTo(mouseX > this.originX ? this.originX + (0.2 * deltaX) : this.originX - (0.2 * deltaX), mouseY - 80);
+		this.context.lineTo(outerX, mouseY - 80);
+		this.context.lineTo(innerX, mouseY - 80);
 		this.context.lineTo(this.originX, mouseY > this.originY ? this.originY + (0.4 * deltaY) - 80 : this.originY - (0.4 * deltaY) - 80);
 		this.context.closePath();
 		this.context.stroke();
 	}
 
 	drawHexagon(mouseX, mouseY) {
-		this.context.beginPath();
-		this.context.strokeStyle = this.strokeStyle;
-		this.context.lineJoin = "miter";
-		this.context.lineWidth = this.lineWidth;
 		let deltaX = Math.abs(this.originX - mouseX);
 		let deltaY = Math.abs(this.originY - mouseY);
 		let centerX = mouseX > this.originX ? this.originX + (deltaX / 2) : this.originX - (deltaX / 2);
@@ -204,6 +174,117 @@ class shapeTool {
 		this.context.lineTo(centerX, mouseY - 80);
 		this.context.lineTo(this.originX, outerY - 80);
 		this.context.lineTo(this.originX, innerY - 80);
+		this.context.closePath();
+		this.context.stroke();
+	}
+
+	drawArrowHorizontal(mouseX, mouseY) {
+		let deltaX = Math.abs(this.originX - mouseX);
+		let deltaY = Math.abs(this.originY - mouseY);
+		let centerX = mouseX > this.originX ? this.originX + (deltaX / 2) : this.originX - (deltaX / 2);
+		let centerY = mouseY > this.originY ? this.originY + (deltaY / 2) : this.originY - (deltaY / 2);
+		let innerY = mouseY > this.originY ? this.originY + (0.25 * deltaY) : this.originY - (0.25 * deltaY);
+		let outerY = mouseY > this.originY ? this.originY + (0.75 * deltaY) : this.originY - (0.75 * deltaY);
+		this.context.moveTo(centerX, this.originY - 80);
+		this.context.lineTo(mouseX, centerY - 80);
+		this.context.lineTo(centerX, mouseY - 80);
+		this.context.lineTo(centerX, outerY - 80);
+		this.context.lineTo(this.originX, outerY - 80);
+		this.context.lineTo(this.originX, innerY - 80);
+		this.context.lineTo(centerX, innerY - 80);
+		this.context.closePath();
+		this.context.stroke();
+	}
+
+	drawArrowVertical(mouseX, mouseY) {
+		let deltaX = Math.abs(this.originX - mouseX);
+		let deltaY = Math.abs(this.originY - mouseY);
+		let centerX = mouseX > this.originX ? this.originX + (deltaX / 2) : this.originX - (deltaX / 2);
+		let centerY = mouseY > this.originY ? this.originY + (deltaY / 2) : this.originY - (deltaY / 2);
+		let innerX = mouseX > this.originX ? this.originX + (0.25 * deltaX) : this.originX - (0.25 * deltaX);
+		let outerX = mouseX > this.originX ? this.originX + (0.75 * deltaX) : this.originX - (0.75 * deltaX);
+		this.context.moveTo(innerX, this.originY - 80);
+		this.context.lineTo(outerX, this.originY - 80);
+		this.context.lineTo(outerX, centerY - 80);
+		this.context.lineTo(mouseX, centerY - 80);
+		this.context.lineTo(centerX, mouseY - 80);
+		this.context.lineTo(this.originX, centerY - 80);
+		this.context.lineTo(innerX, centerY - 80);
+		this.context.closePath();
+		this.context.stroke();
+	}
+
+	drawFourPointedStar(mouseX, mouseY) {
+		let deltaX = Math.abs(this.originX - mouseX);
+		let deltaY = Math.abs(this.originY - mouseY);
+		let centerX = mouseX > this.originX ? this.originX + (deltaX / 2) : this.originX - (deltaX / 2);
+		let centerY = mouseY > this.originY ? this.originY + (deltaY / 2) : this.originY - (deltaY / 2);
+		let innerX = mouseX > this.originX ? this.originX + (0.4 * deltaX) : this.originX - (0.4 * deltaX);
+		let outerX = mouseX > this.originX ? this.originX + (0.6 * deltaX) : this.originX - (0.6 * deltaX);
+		let innerY = mouseY > this.originY ? this.originY + (0.4 * deltaY) : this.originY - (0.4 * deltaY);
+		let outerY = mouseY > this.originY ? this.originY + (0.6 * deltaY) : this.originY - (0.6 * deltaY);
+		this.context.moveTo(centerX, this.originY - 80);
+		this.context.lineTo(outerX, innerY - 80);
+		this.context.lineTo(mouseX, centerY - 80);
+		this.context.lineTo(outerX, outerY - 80);
+		this.context.lineTo(centerX, mouseY - 80);
+		this.context.lineTo(innerX, outerY - 80);
+		this.context.lineTo(this.originX, centerY - 80);
+		this.context.lineTo(innerX, innerY - 80);
+		this.context.closePath();
+		this.context.stroke();
+	}
+
+	drawFivePointedStar(mouseX, mouseY) {
+		let deltaX = Math.abs(this.originX - mouseX);
+		let deltaY = Math.abs(this.originY - mouseY);
+		let centerX = mouseX > this.originX ? this.originX + (deltaX / 2) : this.originX - (deltaX / 2);
+		let innerX = mouseX > this.originX ? this.originX + (0.2 * deltaX) : this.originX - (0.2 * deltaX);
+		let middleX1 = mouseX > this.originX ? this.originX + (0.3 * deltaX) : this.originX - (0.3 * deltaX);
+		let middleX2 = mouseX > this.originX ? this.originX + (0.38 * deltaX) : this.originX - (0.38 * deltaX);
+		let middleX3 = mouseX > this.originX ? this.originX + (0.62 * deltaX) : this.originX - (0.62 * deltaX);
+		let middleX4 = mouseX > this.originX ? this.originX + (0.7 * deltaX) : this.originX - (0.7 * deltaX);
+		let outerX = mouseX > this.originX ? this.originX + (0.8 * deltaX) : this.originX - (0.8 * deltaX);
+		let innerY = mouseY > this.originY ? this.originY + (0.39 * deltaY) : this.originY - (0.39 * deltaY);
+		let middleY = mouseY > this.originY ? this.originY + (0.61 * deltaY) : this.originY - (0.61 * deltaY);
+		let outerY = mouseY > this.originY ? this.originY + (0.79 * deltaY) : this.originY - (0.79 * deltaY);
+		this.context.moveTo(centerX, this.originY - 80);
+		this.context.lineTo(middleX3, innerY - 80);
+		this.context.lineTo(mouseX, innerY - 80);
+		this.context.lineTo(middleX4, middleY - 80);
+		this.context.lineTo(outerX, mouseY - 80);
+		this.context.lineTo(centerX, outerY - 80);
+		this.context.lineTo(innerX, mouseY - 80);
+		this.context.lineTo(middleX1, middleY - 80);
+		this.context.lineTo(this.originX, innerY - 80);
+		this.context.lineTo(middleX2, innerY - 80);
+		this.context.closePath();
+		this.context.stroke();
+	}
+
+	drawSixPointedStar(mouseX, mouseY) {
+		let deltaX = Math.abs(this.originX - mouseX);
+		let deltaY = Math.abs(this.originY - mouseY);
+		let centerX = mouseX > this.originX ? this.originX + (deltaX / 2) : this.originX - (deltaX / 2);
+		let centerY = mouseY > this.originY ? this.originY + (deltaY / 2) : this.originY - (deltaY / 2);
+		let innerX = mouseX > this.originX ? this.originX + (0.16 * deltaX) : this.originX - (0.16 * deltaX);
+		let middleX1 = mouseX > this.originX ? this.originX + (0.32 * deltaX) : this.originX - (0.32 * deltaX);
+		let middleX2 = mouseX > this.originX ? this.originX + (0.68 * deltaX) : this.originX - (0.68 * deltaX);
+		let outerX = mouseX > this.originX ? this.originX + (0.84 * deltaX) : this.originX - (0.84 * deltaX);
+		let innerY = mouseY > this.originY ? this.originY + (0.25 * deltaY) : this.originY - (0.25 * deltaY);
+		let outerY = mouseY > this.originY ? this.originY + (0.75 * deltaY) : this.originY - (0.75 * deltaY);
+		this.context.moveTo(centerX, this.originY - 80);
+		this.context.lineTo(middleX2, innerY - 80);
+		this.context.lineTo(mouseX, innerY - 80);
+		this.context.lineTo(outerX, centerY - 80);
+		this.context.lineTo(mouseX, outerY - 80);
+		this.context.lineTo(middleX2, outerY - 80);
+		this.context.lineTo(centerX, mouseY - 80);
+		this.context.lineTo(middleX1, outerY - 80);
+		this.context.lineTo(this.originX, outerY - 80);
+		this.context.lineTo(innerX, centerY - 80);
+		this.context.lineTo(this.originX, innerY - 80);
+		this.context.lineTo(middleX1, innerY - 80);
 		this.context.closePath();
 		this.context.stroke();
 	}
