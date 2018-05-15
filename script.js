@@ -61,6 +61,10 @@ class shapeTool {
 		this.finalX;
 		this.finalY;
 		this.context = context;
+		this.polygon = this.shape == "Polygon" ? true : false;
+		this.polygonInProgress = this.shape == "Polygon" ? true : false;
+		this.polygonX = [];
+		this.polygonY = [];
 	}
 
 	draw(mouseX, mouseY) {
@@ -288,53 +292,57 @@ class shapeTool {
 		this.context.closePath();
 		this.context.stroke();
 	}
-}
 
-class paintHistoryAction {
-	
-	constructor(pointsX, pointsY){
-		this.pointsX = pointsX;
-		this.pointsY = pointsY;
+	drawPolygonFirstLine(mouseX, mouseY) {
+		this.context.beginPath();
+		this.context.strokeStyle = this.strokeStyle;
+		this.context.lineJoin = "miter";
+		this.context.lineWidth = this.lineWidth;
+		this.context.moveTo(this.originX, this.originY - 80);
+		this.context.lineTo(mouseX, mouseY - 80);
+		this.context.stroke();
 	}
-}
 
-class canvasHistoryItem {
-	
-	constructor(itemType, layerId, color){
-		this.canvas = document.getElementById('canvas');
-		this.itemType = itemType;
-		this.layerId = layerId;
-		this.color = color;
+	drawPolygonEndFirstLine(mouseX, mouseY) {
+		this.polygonX.push(this.originX);
+		this.polygonX.push(mouseX);
+		this.polygonY.push(this.originY);
+		this.polygonY.push(mouseY);
 	}
-	
-	captureBrushStroke(brushSize) {
-		this.brushSize = brushSize;
-		var elements = $(".line"+this.layerId);
-		var brushDataArray = [];
-		elements.each(function(){
-			brushDataArray.push({
-				mouseX: $(this).css('left'),
-				mouseY: $(this).css('top')
-			});
-		});
-		this.brushDataArray = brushDataArray;
-	}
-	
-	createBrushStroke() {
-		var brushSize = this.brushSize;
-		var layerId = this.layerId;
-		var color = this.color;
-		var radius = brushSize / 2;
-		this.brushDataArray.forEach(function(item, index){
-			this.canvas.append("<svg class='line"+layerId+"' draggable='false' style='position:absolute; left:"+item.mouseX+"; top:"+item.mouseY+"; height:"+brushSize+"px; width:"+brushSize+"px; -moz-user-select:none'><circle cx='"+radius+"' cy='"+radius+"' r='"+radius+"' fill='"+color+"' /></svg>");
-		});
-	}
-	
-	removeFromCanvas() {
-		var line = document.getElementsByClassName("line"+this.layerId);
-		while(line[0]) {
-			line[0].remove();
+
+	drawPolygonAddPoints(mouseX, mouseY) {
+		let deltaX = Math.abs(this.originX - mouseX);
+		let deltaY = Math.abs(this.originY - mouseY);
+		if (deltaX < 5 && deltaY < 5) {
+			this.polygonInProgress = false;
+			this.drawPolygon();
+			canvasController.addUndoItem(this);
+		} else {
+			this.context.beginPath();
+			this.context.strokeStyle = this.strokeStyle;
+			this.context.lineJoin = "miter";
+			this.context.lineWidth = this.lineWidth;
+			this.polygonX.push(mouseX);
+			this.polygonY.push(mouseY);
+			this.context.moveTo(this.polygonX[0], this.polygonY[0] - 80);
+			for (let i = 1; i < this.polygonX.length; i++) {
+				this.context.lineTo(this.polygonX[i], this.polygonY[i] - 80);
+			}
+			this.context.stroke();
 		}
+	}
+
+	drawPolygon(mouseX, mouseY) {
+		this.context.beginPath();
+		this.context.strokeStyle = this.strokeStyle;
+		this.context.lineJoin = "miter";
+		this.context.lineWidth = this.lineWidth;
+		this.context.moveTo(this.polygonX[0], this.polygonY[0] - 80);
+		for (let i = 1; i < this.polygonX.length; i++) {
+			this.context.lineTo(this.polygonX[i], this.polygonY[i] - 80);
+		}
+		this.context.closePath();
+		this.context.stroke();
 	}
 }
 
@@ -467,32 +475,68 @@ class eventListenerControl {
 	}
 
 	setShapeListeners(shapeName) {
-		$("#canvas").mousedown(e => {
-			$(document).data('mousedown', true);
-			brush = new shapeTool(shapeName, document.getElementById('canvas').getContext('2d'), $(".brush-slider").slider("value"), $(".selected").children().css("background-color"), e.clientX, e.clientY);
-		});
+		if (shapeName == "Polygon") {
+			$("#canvas").mousedown(e => {
+				if (typeof brush !== "undefined" && brush.polygonInProgress == true) {
+					canvasController.clearCanvas();
+					canvasController.redrawHistory();
+					brush.drawPolygonAddPoints(e.clientX, e.clientY);
+				} else {
+					$(document).data('mousedown', true);
+					brush = new shapeTool(shapeName, document.getElementById('canvas').getContext('2d'), $(".brush-slider").slider("value"), $(".selected").children().css("background-color"), e.clientX, e.clientY);
+				}
+			});
 
-		$("#canvas").mousemove(e => {
-			if ($(document).data('mousedown')) {
-				canvasController.clearCanvas();
-				canvasController.redrawHistory();
-				brush.draw(e.clientX, e.clientY);
-			}
-		});
+			$("#canvas").mousemove(e => {
+				if ($(document).data('mousedown')) {
+					canvasController.clearCanvas();
+					canvasController.redrawHistory();
+					brush.drawPolygonFirstLine(e.clientX, e.clientY);
+				}
+			});
 
-		$("#canvas").mouseup(e => {
-			$(document).data('mousedown', false);
-			brush.recordFinalCoordinate(e.clientX, e.clientY);
-			canvasController.addUndoItem(brush);
-		});
+			$("#canvas").mouseup(e => {
+				if ($(document).data('mousedown')) {
+					$(document).data('mousedown', false);
+					brush.drawPolygonEndFirstLine(e.clientX, e.clientY);
+				}
+			});
 
-		$("#canvas").mouseleave(e => {
-			if ($(document).data('mousedown')) {
+			$("#canvas").mouseleave(e => {
+				if ($(document).data('mousedown')) {
+					$(document).data('mousedown', false);
+					brush.drawPolygonEndFirstLine(e.clientX, e.clientY);
+				}
+			});
+		} else {
+
+			$("#canvas").mousedown(e => {
+				$(document).data('mousedown', true);
+				brush = new shapeTool(shapeName, document.getElementById('canvas').getContext('2d'), $(".brush-slider").slider("value"), $(".selected").children().css("background-color"), e.clientX, e.clientY);
+			});
+
+			$("#canvas").mousemove(e => {
+				if ($(document).data('mousedown')) {
+					canvasController.clearCanvas();
+					canvasController.redrawHistory();
+					brush.draw(e.clientX, e.clientY);
+				}
+			});
+
+			$("#canvas").mouseup(e => {
 				$(document).data('mousedown', false);
 				brush.recordFinalCoordinate(e.clientX, e.clientY);
 				canvasController.addUndoItem(brush);
-			}
-		});
+			});
+
+			$("#canvas").mouseleave(e => {
+				if ($(document).data('mousedown')) {
+					$(document).data('mousedown', false);
+					brush.recordFinalCoordinate(e.clientX, e.clientY);
+					canvasController.addUndoItem(brush);
+				}
+			});
+		}
 	}
 
 	setStaticListeners() {
@@ -505,8 +549,12 @@ class eventListenerControl {
 			let ctx = shapes[i].getContext('2d');
 			let shapeName = shapes[i].id;
 			let drawShape = shape => {
-				let brush = new shapeTool(shape, ctx, 1, "rgb(0, 0, 0)", 2, 2 + 80);
-				brush.draw(16, 16 + 80);
+				if (shape == "Polygon") {
+					let brush = new shapeTool(shape, ctx, 1, "rgb(0, 0, 0)", 2, 2 + 80); // come back here to push preset points for polygon
+				} else {
+					let brush = new shapeTool(shape, ctx, 1, "rgb(0, 0, 0)", 2, 2 + 80);
+					brush.draw(16, 16 + 80);
+				}
 			}
 
 			ctx.fillStyle = 'rgb(215,215,215)'; // initial background color w/ shape
@@ -533,8 +581,12 @@ class eventListenerControl {
 					let ctx2 = allShapes[n].getContext('2d');
 					let shapeName2 = allShapes[n].id;
 					let drawShape2 = shape => {
-						let brush = new shapeTool(shape, ctx2, 1, "rgb(0, 0, 0)", 2, 2 + 80);
-						brush.draw(16, 16 + 80);
+						if (shape == "Polygon") {
+							let brush = new shapeTool(shape, ctx2, 1, "rgb(0, 0, 0)", 2, 2 + 80); // come back here to push preset points for polygon
+						} else {
+							let brush = new shapeTool(shape, ctx2, 1, "rgb(0, 0, 0)", 2, 2 + 80);
+							brush.draw(16, 16 + 80);
+						}
 					}
 					allShapes[n].classList.remove('active-shape');
 					ctx2.fillStyle = 'rgb(215,215,215)';
@@ -578,5 +630,4 @@ class eventListenerControl {
 			canvasController.eventListenerController.setBrushListeners();
 		});
 	}
-	
 }
