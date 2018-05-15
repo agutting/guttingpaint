@@ -3,7 +3,7 @@ class paintTool {
 	constructor() {
 		this.pointsX = [];
 		this.pointsY = [];
-		this.strokeStyle = $(".selected").children().css("background-color");
+		this.strokeStyle = $(".selected").children().css("background-color"); // color
 		this.lineWidth = $(".brush-slider").slider("value");
 	}
 	
@@ -54,7 +54,7 @@ class shapeTool {
 
 	constructor(shape, context, lineWidth, strokeStyle, origMouseX, origMouseY) {
 		this.shape = shape;
-		this.strokeStyle = strokeStyle;
+		this.strokeStyle = strokeStyle; // color
 		this.lineWidth = lineWidth;
 		this.originX = origMouseX;
 		this.originY = origMouseY;
@@ -62,8 +62,8 @@ class shapeTool {
 		this.finalY;
 		this.context = context;
 		this.polygon = this.shape == "Polygon" ? true : false;
-		this.polygonInProgress = this.shape == "Polygon" ? true : false;
-		this.polygonX = [];
+		this.polygonInProgress = this.shape == "Polygon" ? true : false; // used by polygon shapes to check whether in the middle of drawing a polygon or beginning a new one
+		this.polygonX = []; // sets of coordinates for drawing/redrawing polygons
 		this.polygonY = [];
 	}
 
@@ -293,7 +293,7 @@ class shapeTool {
 		this.context.stroke();
 	}
 
-	drawPolygonFirstLine(mouseX, mouseY) {
+	drawPolygonFirstLine(mouseX, mouseY) { // redraws first line while holding down mouse button
 		this.context.beginPath();
 		this.context.strokeStyle = this.strokeStyle;
 		this.context.lineJoin = "miter";
@@ -303,14 +303,14 @@ class shapeTool {
 		this.context.stroke();
 	}
 
-	drawPolygonEndFirstLine(mouseX, mouseY) {
+	drawPolygonEndFirstLine(mouseX, mouseY) { // records start/end coordinates of first drawn line to build from with drawPolygonAddPoints()
 		this.polygonX.push(this.originX);
 		this.polygonX.push(mouseX);
 		this.polygonY.push(this.originY);
 		this.polygonY.push(mouseY);
 	}
 
-	drawPolygonAddPoints(mouseX, mouseY) {
+	drawPolygonAddPoints(mouseX, mouseY) { // accepts new pair of coordinates and redraws previous polygon sides; if click within threshold of origin, end shape, close path
 		let deltaX = Math.abs(this.originX - mouseX);
 		let deltaY = Math.abs(this.originY - mouseY);
 		if (deltaX < 5 && deltaY < 5) {
@@ -332,7 +332,7 @@ class shapeTool {
 		}
 	}
 
-	drawPolygon(mouseX, mouseY) {
+	drawPolygon(mouseX, mouseY) { // more of a redraw-type function, but named drawPolygon to facilitate class compatibility as all other shapes are redrawn this way
 		this.context.beginPath();
 		this.context.strokeStyle = this.strokeStyle;
 		this.context.lineJoin = "miter";
