@@ -337,12 +337,12 @@ class shapeTool {
 		this.context.strokeStyle = this.strokeStyle;
 		this.context.lineJoin = "miter";
 		this.context.lineWidth = this.lineWidth;
-		if (this.originX != 2 || this.originY != 2 || mouseX != 16 || mouseY != 16) {
+		if (this.originX != 2 || this.originY != 2 || mouseX != 16 || mouseY != 16) { // portion for drawing custom polygon on main canvas
 			this.context.moveTo(this.polygonX[0], this.polygonY[0] - 80);
 			for (let i = 1; i < this.polygonX.length; i++) {
 				this.context.lineTo(this.polygonX[i], this.polygonY[i] - 80);
 			}
-		} else {
+		} else { // portion for drawing shape button
 			this.context.moveTo(this.originX, mouseY);
 			this.context.lineTo(7, 4);
 			this.context.lineTo(12, 4);
@@ -559,7 +559,7 @@ class eventListenerControl {
 			let shapeName = shapes[i].id;
 			let drawShape = shape => {
 				if (shape == "Polygon") {
-					let brush = new shapeTool(shape, ctx, 1, "rgb(0, 0, 0)", 2, 2); // come back here to push preset points for polygon
+					let brush = new shapeTool(shape, ctx, 1, "rgb(0, 0, 0)", 2, 2);
 					brush.draw(16, 16);
 				} else {
 					let brush = new shapeTool(shape, ctx, 1, "rgb(0, 0, 0)", 2, 2 + 80);
@@ -592,7 +592,8 @@ class eventListenerControl {
 					let shapeName2 = allShapes[n].id;
 					let drawShape2 = shape => {
 						if (shape == "Polygon") {
-							let brush = new shapeTool(shape, ctx2, 1, "rgb(0, 0, 0)", 2, 2 + 80); // come back here to push preset points for polygon
+							let brush = new shapeTool(shape, ctx2, 1, "rgb(0, 0, 0)", 2, 2);
+							brush.draw(16, 16);
 						} else {
 							let brush = new shapeTool(shape, ctx2, 1, "rgb(0, 0, 0)", 2, 2 + 80);
 							brush.draw(16, 16 + 80);
