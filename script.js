@@ -337,9 +337,18 @@ class shapeTool {
 		this.context.strokeStyle = this.strokeStyle;
 		this.context.lineJoin = "miter";
 		this.context.lineWidth = this.lineWidth;
-		this.context.moveTo(this.polygonX[0], this.polygonY[0] - 80);
-		for (let i = 1; i < this.polygonX.length; i++) {
-			this.context.lineTo(this.polygonX[i], this.polygonY[i] - 80);
+		if (this.originX != 2 || this.originY != 2 || mouseX != 16 || mouseY != 16) {
+			this.context.moveTo(this.polygonX[0], this.polygonY[0] - 80);
+			for (let i = 1; i < this.polygonX.length; i++) {
+				this.context.lineTo(this.polygonX[i], this.polygonY[i] - 80);
+			}
+		} else {
+			this.context.moveTo(this.originX, mouseY);
+			this.context.lineTo(7, 4);
+			this.context.lineTo(12, 4);
+			this.context.lineTo(10, 8);
+			this.context.lineTo(mouseX, 8);
+			this.context.lineTo(mouseX, mouseY);
 		}
 		this.context.closePath();
 		this.context.stroke();
@@ -550,7 +559,8 @@ class eventListenerControl {
 			let shapeName = shapes[i].id;
 			let drawShape = shape => {
 				if (shape == "Polygon") {
-					let brush = new shapeTool(shape, ctx, 1, "rgb(0, 0, 0)", 2, 2 + 80); // come back here to push preset points for polygon
+					let brush = new shapeTool(shape, ctx, 1, "rgb(0, 0, 0)", 2, 2); // come back here to push preset points for polygon
+					brush.draw(16, 16);
 				} else {
 					let brush = new shapeTool(shape, ctx, 1, "rgb(0, 0, 0)", 2, 2 + 80);
 					brush.draw(16, 16 + 80);

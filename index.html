@@ -1,172 +1,173 @@
 <html><head>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-<script src="script.js"></script>
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/vader/jquery-ui.css">
-<link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+	<meta charset="UTF-8">
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+	<script src="script.js"></script>
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/vader/jquery-ui.css">
+	<link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+	<link rel="stylesheet" href="styles.css">
 </head><body>
-		   <div class="header" draggable="false">
-		   	<div class="color-picker-container">
-		   		<!--<input class="color-picker" type="color">Color-->
-		   		<div class="color-box-outer selected">
-		   			<div class="color-box-inner color0"></div>
-		   		</div>
-		   		<div class="color-box-outer">
-		   			<div class="color-box-inner color1"></div>
-		   		</div>
-		   		<div class="color-box-outer">
-		   			<div class="color-box-inner color2"></div>
-		   		</div>
-		   		<div class="color-box-outer">
-		   			<div class="color-box-inner color3"></div>
-		   		</div>
-		   		<div class="color-box-outer">
-		   			<div class="color-box-inner color4"></div>
-		   		</div>
-		   		<div class="color-box-outer">
-		   			<div class="color-box-inner color5"></div>
-		   		</div>
-		   		<div class="color-box-outer">
-		   			<div class="color-box-inner color6"></div>
-		   		</div>
-		   		<div class="color-box-outer">
-		   			<div class="color-box-inner color7"></div>
-		   		</div>
-		   		<div class="color-box-outer">
-		   			<div class="color-box-inner color8"></div>
-		   		</div>
-		   		<div class="color-box-outer">
-		   			<div class="color-box-inner color9"></div>
-		   		</div>
-		   		<div class="color-box-outer">
-		   			<div class="color-box-inner color10"></div>
-		   		</div>
-		   		<div class="color-box-outer">
-		   			<div class="color-box-inner color11"></div>
-		   		</div>
-		   		<div class="color-box-outer">
-		   			<div class="color-box-inner color12"></div>
-		   		</div>
-		   		<div class="color-box-outer">
-		   			<div class="color-box-inner color13"></div>
-		   		</div>
-		   		<div class="color-box-outer">
-		   			<div class="color-box-inner color14"></div>
-		   		</div>
-		   		<div class="color-box-outer">
-		   			<div class="color-box-inner color15"></div>
-		   		</div>
-		   		<div class="color-box-outer">
-		   			<div class="color-box-inner color16"></div>
-		   		</div>
-		   		<div class="color-box-outer">
-		   			<div class="color-box-inner color17"></div>
-		   		</div>
-		   		<div class="color-box-outer">
-		   			<div class="color-box-inner color18"></div>
-		   		</div>
-		   		<div class="color-box-outer">
-		   			<div class="color-box-inner color19"></div>
-		   		</div>
-		   		<div class="color-box-outer">
-		   			<div class="color-box-inner color20"></div>
-		   		</div>
-		   		<div class="color-box-outer">
-		   			<div class="color-box-inner color21"></div>
-		   		</div>
-		   		<div class="color-box-outer">
-		   			<div class="color-box-inner color22"></div>
-		   		</div>
-		   		<div class="color-box-outer">
-		   			<div class="color-box-inner color23"></div>
-		   		</div>
-		   		<div class="color-box-outer">
-		   			<div class="color-box-inner color24"></div>
-		   		</div>
-		   		<div class="color-box-outer">
-		   			<div class="color-box-inner color25"></div>
-		   		</div>
-		   		<div class="color-box-outer">
-		   			<div class="color-box-inner color26"></div>
-		   		</div>
-		   		<div class="color-box-outer">
-		   			<div class="color-box-inner color27"></div>
-		   		</div>
-		   		<div class="color-box-outer">
-		   			<div class="color-box-inner color28"></div>
-		   		</div>
-		   		<div class="color-box-outer">
-		   			<div class="color-box-inner color29"></div>
-		   		</div>
+	<div class="header" draggable="false">
+		<div class="color-picker-container">
+		   	<!--<input class="color-picker" type="color">Color-->
+		   	<div class="color-box-outer selected">
+		   		<div class="color-box-inner color0"></div>
 		   	</div>
-		   	<div class="button-container left button-seperator-right">
-		   		<input id="browser-color-picker" type="color" />
-		   		<i id="custom-color-button" class="fas fa-eye-dropper header-button"></i><br>Custom
+		   	<div class="color-box-outer">
+		   		<div class="color-box-inner color1"></div>
 		   	</div>
-		   	<div class="slider-container">
-		   		<div class="brush-slider"></div>Brush Size: <span class="current-brush-size">20</span>
+		   	<div class="color-box-outer">
+		   		<div class="color-box-inner color2"></div>
 		   	</div>
-			<div class="button-container left button-seperator-left">
-				<i id="paint-brush-button" class="fas fa-paint-brush header-button"></i><br>Brush
+		   	<div class="color-box-outer">
+		   		<div class="color-box-inner color3"></div>
+		   	</div>
+		   	<div class="color-box-outer">
+		   		<div class="color-box-inner color4"></div>
+		   	</div>
+		   	<div class="color-box-outer">
+		   		<div class="color-box-inner color5"></div>
+		   	</div>
+		   	<div class="color-box-outer">
+		   		<div class="color-box-inner color6"></div>
+		   	</div>
+		   	<div class="color-box-outer">
+		   		<div class="color-box-inner color7"></div>
+		   	</div>
+		   	<div class="color-box-outer">
+		   		<div class="color-box-inner color8"></div>
+		   	</div>
+		   	<div class="color-box-outer">
+		   		<div class="color-box-inner color9"></div>
+		   	</div>
+		   	<div class="color-box-outer">
+		   		<div class="color-box-inner color10"></div>
+		   	</div>
+		   	<div class="color-box-outer">
+		   		<div class="color-box-inner color11"></div>
+		   	</div>
+		   	<div class="color-box-outer">
+		   		<div class="color-box-inner color12"></div>
+		   	</div>
+		   	<div class="color-box-outer">
+		   		<div class="color-box-inner color13"></div>
+		   	</div>
+		   	<div class="color-box-outer">
+		   		<div class="color-box-inner color14"></div>
+		   	</div>
+		   	<div class="color-box-outer">
+		   		<div class="color-box-inner color15"></div>
+		   	</div>
+		   	<div class="color-box-outer">
+		   		<div class="color-box-inner color16"></div>
+		   	</div>
+		   	<div class="color-box-outer">
+		   		<div class="color-box-inner color17"></div>
+		   	</div>
+		   	<div class="color-box-outer">
+		   		<div class="color-box-inner color18"></div>
+		   	</div>
+		   	<div class="color-box-outer">
+		   		<div class="color-box-inner color19"></div>
+		   	</div>
+		   	<div class="color-box-outer">
+		   		<div class="color-box-inner color20"></div>
+		   	</div>
+		   	<div class="color-box-outer">
+		   		<div class="color-box-inner color21"></div>
+		   	</div>
+		   	<div class="color-box-outer">
+		   		<div class="color-box-inner color22"></div>
+		   	</div>
+		   	<div class="color-box-outer">
+		   		<div class="color-box-inner color23"></div>
+		   	</div>
+		   	<div class="color-box-outer">
+		   		<div class="color-box-inner color24"></div>
+		   	</div>
+		   	<div class="color-box-outer">
+		   		<div class="color-box-inner color25"></div>
+		   	</div>
+		   	<div class="color-box-outer">
+		   		<div class="color-box-inner color26"></div>
+		   	</div>
+		   	<div class="color-box-outer">
+		   		<div class="color-box-inner color27"></div>
+		   	</div>
+		   	<div class="color-box-outer">
+		   		<div class="color-box-inner color28"></div>
+		   	</div>
+		   	<div class="color-box-outer">
+		   		<div class="color-box-inner color29"></div>
+		   	</div>
+		</div>
+		<div class="button-container left button-seperator-right">
+		   	<input id="browser-color-picker" type="color" />
+		   	<i id="custom-color-button" class="fas fa-eye-dropper header-button"></i><br>Custom
+		</div>
+		<div class="slider-container">
+		   	<div class="brush-slider"></div>Brush Size: <span class="current-brush-size">20</span>
+		</div>
+		<div class="button-container left button-seperator-left">
+			<i id="paint-brush-button" class="fas fa-paint-brush header-button"></i><br>Brush
+		</div>
+		<div class="shape-picker-container">
+			<div title="Line" class="shape-box-outer">
+				<canvas id="Line" class="shape-box-inner shape-icon"></canvas>
 			</div>
-			<div class="shape-picker-container">
-				<div class="shape-box-outer">
-					<canvas id="Line" class="shape-box-inner shape-icon"></canvas>
-				</div>
-				<div class="shape-box-outer">
-					<canvas id="Rectangle" class="shape-box-inner"></canvas>
-				</div>
-				<div class="shape-box-outer">
-					<canvas id="Ellipse" class="shape-box-inner"></canvas>
-				</div>
-				<div class="shape-box-outer">
-					<canvas id="RightTriangle" class="shape-box-inner"></canvas>
-				</div>
-				<div class="shape-box-outer">
-					<canvas id="IsoscelesTriangleVertical" class="shape-box-inner"></canvas>
-				</div>
-				<div class="shape-box-outer">
-					<canvas id="IsoscelesTriangleHorizontal" class="shape-box-inner"></canvas>
-				</div>
-				<div class="shape-box-outer">
-					<canvas id="Diamond" class="shape-box-inner"></canvas>
-				</div>
-				<div class="shape-box-outer">
-					<canvas id="Pentagon" class="shape-box-inner"></canvas>
-				</div>
-				<div class="shape-box-outer">
-					<canvas id="Hexagon" class="shape-box-inner"></canvas>
-				</div>
-				<div class="shape-box-outer">
-					<canvas id="Polygon" class="shape-box-inner"></canvas>
-				</div>
-				<div class="shape-box-outer">
-					<canvas id="ArrowHorizontal" class="shape-box-inner"></canvas>
-				</div>
-				<div class="shape-box-outer">
-					<canvas id="ArrowVertical" class="shape-box-inner"></canvas>
-				</div>
-				<div class="shape-box-outer">
-					<canvas id="FourPointedStar" class="shape-box-inner"></canvas>
-				</div>
-				<div class="shape-box-outer">
-					<canvas id="FivePointedStar" class="shape-box-inner"></canvas>
-				</div>
-				<div class="shape-box-outer">
-					<canvas id="SixPointedStar" class="shape-box-inner"></canvas>
-				</div>
+			<div title="Rectangle" class="shape-box-outer">
+				<canvas id="Rectangle" class="shape-box-inner"></canvas>
 			</div>
-			<div class="button-container right">
-				<span class="close heavy header-button"></span><br>Clear All
+			<div title="Ellipse" class="shape-box-outer">
+				<canvas id="Ellipse" class="shape-box-inner"></canvas>
 			</div>
-		   	<div class="button-container right button-seperator-right">
-		   		<i id="redo-button" class="far fa-arrow-alt-circle-right header-button header-button-disabled"></i><br>Redo
-		   	</div>
-		   	<div class="button-container right button-seperator-right button-seperator-left">
-		   		<i id="undo-button" class="far fa-arrow-alt-circle-left header-button header-button-disabled"></i><br>Undo
-		   	</div>
-		   </div>
+			<div title="Right Triangle" class="shape-box-outer">
+				<canvas id="RightTriangle" class="shape-box-inner"></canvas>
+			</div>
+			<div title="Up/Down Isosceles Triangle" class="shape-box-outer">
+				<canvas id="IsoscelesTriangleVertical" class="shape-box-inner"></canvas>
+			</div>
+			<div title="Right/Left Isosceles Triangle" class="shape-box-outer">
+				<canvas id="IsoscelesTriangleHorizontal" class="shape-box-inner"></canvas>
+			</div>
+			<div title="Diamond" class="shape-box-outer">
+				<canvas id="Diamond" class="shape-box-inner"></canvas>
+			</div>
+			<div title="Pentagon" class="shape-box-outer">
+				<canvas id="Pentagon" class="shape-box-inner"></canvas>
+			</div>
+			<div title="Hexagon" class="shape-box-outer">
+				<canvas id="Hexagon" class="shape-box-inner"></canvas>
+			</div>
+			<div title="Custom Polygon" class="shape-box-outer">
+				<canvas id="Polygon" class="shape-box-inner"></canvas>
+			</div>
+			<div title="Right/Left Arrow" class="shape-box-outer">
+				<canvas id="ArrowHorizontal" class="shape-box-inner"></canvas>
+			</div>
+			<div title="Up/Down Arrowy" class="shape-box-outer">
+				<canvas id="ArrowVertical" class="shape-box-inner"></canvas>
+			</div>
+			<div title="Four-Pointed Star" class="shape-box-outer">
+				<canvas id="FourPointedStar" class="shape-box-inner"></canvas>
+			</div>
+			<div title="Five-Pointed Star" class="shape-box-outer">
+				<canvas id="FivePointedStar" class="shape-box-inner"></canvas>
+			</div>
+			<div title="Six-Pointed Star" class="shape-box-outer">
+				<canvas id="SixPointedStar" class="shape-box-inner"></canvas>
+			</div>
+		</div>
+		<div class="button-container right">
+			<span class="close heavy header-button"></span><br>Clear All
+		</div>
+		<div class="button-container right button-seperator-right">
+		   	<i id="redo-button" class="far fa-arrow-alt-circle-right header-button header-button-disabled"></i><br>Redo
+		</div>
+		<div class="button-container right button-seperator-right button-seperator-left">
+		   	<i id="undo-button" class="far fa-arrow-alt-circle-left header-button header-button-disabled"></i><br>Undo
+		</div>
+		</div>
 <canvas id="canvas"></canvas>
 
 
