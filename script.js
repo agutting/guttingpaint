@@ -369,7 +369,7 @@ class canvasControl {
 	activateBrush() {
 		this.eventListenerController.removeCanvasListeners();
 		this.eventListenerController.setBrushListeners();
-		$("#paint-brush-button").addClass("active-tool");
+		document.getElementById('paint-brush-button').classList.add('active-tool');
 	}
 	
 	addUndoItem(item) {
@@ -384,7 +384,7 @@ class canvasControl {
 
 	addCustomColor(color) { // sets a bottom-row square's background to color selected in browser color picker
 		document.getElementsByClassName("color" + this.customColorCounter)[0].style.background = color;
-		$(".color-box-outer").removeClass("selected");
+		document.getElementsByClassName('color-box-outer').classList.remove('selected');
 		$(".color" + this.customColorCounter).parent().addClass("selected");
 		if (this.customColorCounter == 29) { // progress through squares from left to right, loop at end
 			this.customColorCounter = 20;
@@ -627,8 +627,13 @@ class eventListenerControl {
 				let ctx = shapes[i].getContext('2d');
 				let shapeName = shapes[i].id;
 				let drawShape = shape => {
-					let brush = new shapeTool(shape, ctx, 1, "rgb(0, 0, 0)", 2, 2 + 80);
-					brush.draw(16, 16 + 80);
+					if (shape == "Polygon") {
+						let brush = new shapeTool(shape, ctx, 1, "rgb(0, 0, 0)", 2, 2);
+						brush.draw(16, 16);
+					} else {
+						let brush = new shapeTool(shape, ctx, 1, "rgb(0, 0, 0)", 2, 2 + 80);
+						brush.draw(16, 16 + 80);
+					}
 				}
 
 				shapes[i].classList.remove('active-shape');
